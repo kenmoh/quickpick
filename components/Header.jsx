@@ -8,9 +8,11 @@ import {
 import React from "react";
 import { COLORS, FONT_WEIGHT } from "../constants/colors_font";
 
-const Header = () => {
+const Header = ({ height = 35, bgColor = COLORS.primaryColor }) => {
   return (
-    <View style={styles.headerStyle}>
+    <View
+      style={[styles.headerStyle, { height: height, backgroundColor: bgColor }]}
+    >
       <StatusBar
         barStyle="light-content"
         backgroundColor={COLORS.primaryColor}
@@ -29,9 +31,8 @@ export default Header;
 
 const styles = StyleSheet.create({
   headerStyle: {
-    height: 35,
     flexDirection: "row",
-    backgroundColor: COLORS.primaryColor,
+
     alignItems: "center",
     justifyContent: "center",
     columnGap: 50,

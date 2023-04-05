@@ -12,7 +12,7 @@ const index = () => {
       <Header />
       <View style={styles.container}>
         <Text style={styles.text}>Hello World!</Text>
-        <Link href="/signin">Sign In</Link>
+        <Link href="/userProfile">User PRofile</Link>
       </View>
     </AppSafeAreaView>
   );

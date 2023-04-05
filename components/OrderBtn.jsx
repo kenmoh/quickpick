@@ -3,15 +3,13 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { COLORS } from "../constants/colors_font";
 import { BUTTON_SIZE, FONT_SIZE } from "../constants/sizes";
 
-const AppButton = ({
+const OrderBtn = ({
   textSize = "smallText",
-  borderRadius,
   btnColor,
   title,
   textColor = "primaryColor",
   width = "largeBtnWidth",
-  height = 40,
-  verticalMargin = "btnVerticalMarginLarge",
+  height = 30,
   onPress = () => {},
 }) => {
   return (
@@ -22,8 +20,6 @@ const AppButton = ({
         {
           width: BUTTON_SIZE[width],
           backgroundColor: COLORS[btnColor],
-          borderRadius: BUTTON_SIZE[borderRadius],
-          marginVertical: BUTTON_SIZE[verticalMargin],
           height: height,
         },
       ]}
@@ -40,15 +36,16 @@ const AppButton = ({
   );
 };
 
-export default AppButton;
+export default OrderBtn;
 
 const styles = StyleSheet.create({
   btnStyle: {
     width: BUTTON_SIZE.largeBtnWidth,
-    borderRadius: BUTTON_SIZE.largeRadius,
+    // borderRadius: BUTTON_SIZE.largeRadius,
+    borderTopEndRadius: BUTTON_SIZE.mediumRadius,
+    borderTopStartRadius: BUTTON_SIZE.mediumRadius,
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: BUTTON_SIZE.btnVerticalMarginLarge,
   },
 
   btnText: {

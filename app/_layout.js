@@ -45,5 +45,16 @@ export default () => (
         title: "",
       }}
     />
+    <Stack.Screen
+      name="orderDetails"
+      options={{
+        title: "",
+        headerTransparent: true,
+        headerTintColor: COLORS.white,
+        headerStyle: {
+          backgroundColor: null,
+        },
+      }}
+    />
   </Stack>
 );

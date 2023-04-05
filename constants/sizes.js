@@ -13,7 +13,7 @@ export const BUTTON_SIZE = {
   largeBtnWidth: "100%",
   smallRadius: 3,
   largeRadius: 50,
-  mediumRadius: 8,
+  mediumRadius: 10,
   btnVerticalMarginLarge: 15,
   btnVerticalMarginSmall: 3,
 };

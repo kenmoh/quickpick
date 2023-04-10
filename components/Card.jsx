@@ -11,37 +11,39 @@ const Card = ({ order, onPress }) => {
         <View style={styles.headerContainer}>
           <View style={styles.header}>
             <Image
-              source={{ uri: order.order_photo_url }}
+              source={{
+                uri: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
+              }}
               style={styles.imageStyle}
               resizeMode="contain"
             />
             <View style={styles.text}>
-              <Text style={styles.title}>{order.name}</Text>
-              <Text style={styles.amount}>NGN {order.total_cost}</Text>
+              <Text style={styles.title}>Order</Text>
+              <Text style={styles.amount}>NGN 3000</Text>
             </View>
           </View>
-          <Text style={styles.date}>{"order.created_at"}</Text>
+          <Text style={styles.date}>12-04-2023</Text>
         </View>
         <Divider />
         <View style={styles.body}>
-          <Text style={styles.title}>{order.origin}</Text>
+          <Text style={styles.title}>Lakowe</Text>
           <AntDesign name="swapright" size={24} color={COLORS.darkText} />
-          <Text style={styles.title}>{order.destination}</Text>
+          <Text style={styles.title}>Lekki</Text>
         </View>
         <Divider />
         <View style={styles.footer}>
           <View style={styles.footerText}>
             <Text style={styles.title}>Distance: </Text>
-            <Text style={styles.distance}>{order.distance} km</Text>
+            <Text style={styles.distance}>4.88 km</Text>
           </View>
 
-          {order.is_picked_up ? (
+          {/* {order.is_picked_up ? (
             <Text style={styles.btnText}>Pending</Text>
           ) : order.order_is_delivered ? (
             <Text style={styles.btnText}>Delivered</Text>
           ) : (
             ""
-          )}
+          )} */}
         </View>
       </View>
     </TouchableOpacity>
@@ -73,13 +75,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   card: {
-    width: "95%",
+    width: "100%",
     backgroundColor: "white",
     padding: 10,
     elevation: 1,
     borderRadius: 5,
-    marginVertical: 5,
-    alignSelf: "center",
+    marginVertical: 2.5,
   },
 
   date: {

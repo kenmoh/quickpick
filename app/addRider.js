@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "expo-router";
 
 import { Formik } from "formik";
@@ -13,7 +13,6 @@ import * as Yup from "yup";
 
 import {
   AppButton,
-  AppErrorMessage,
   AppSafeAreaView,
   AppTextInput,
   InputErrorMessage,
@@ -21,21 +20,20 @@ import {
 import { PADDING } from "../constants/sizes";
 import { COLORS } from "../constants/colors_font";
 
-import usersApi from "../api/users";
-import useApi from "../hooks/useApi";
-
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().trim().required().label("Email"),
   username: Yup.string().required().label("Email"),
+  fullName: Yup.string().required().label("Username"),
   phoneNumber: Yup.string()
     .required()
     .matches(phoneRegExp, "Enter a valid phone number")
     .max(16)
     .min(7)
     .label("Phone Number"),
+  bankAccountNumber: Yup.string().required().label("Bank Account Number"),
   password: Yup.string().required().label("Password"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords must match")
@@ -43,48 +41,39 @@ const validationSchema = Yup.object().shape({
     .label("Confirm Password"),
 });
 
-const signup = () => {
+const addOrder = () => {
   const router = useRouter();
-  const [fieldExist, setFieldExist] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const handleSubmit = async (user) => {
-    // setIsLoading(true);
-
-    const result = await usersApi.addUser(user);
-    // setIsLoading(false);
-
-    console.log(result.data);
-    console.log(result.problem);
-    if (!result.ok) {
-      if (result.data) setFieldExist(result.data.detail);
-      else {
-        setFieldExist("An unexpected error occured.");
-      }
-      return;
-    }
-    setFieldExist(false);
-    router.replace("signin");
-  };
-
   return (
     <AppSafeAreaView>
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={styles.titleText}>Sign Up</Text>
+          <Text style={styles.titleText}>Add Rider</Text>
           <Formik
             initialValues={{
+              fullName: "",
               username: "",
               email: "",
               phoneNumber: "",
+              bankAccountNumber: "",
               confirmPassword: "",
               password: "",
             }}
             validationSchema={validationSchema}
-            onSubmit={handleSubmit}
+            onSubmit={(values) => console.log(values)}
           >
             {({ handleChange, handleSubmit, values, errors, touched }) => (
               <>
-                <AppErrorMessage error={fieldExist} visible={fieldExist} />
+                <AppTextInput
+                  iconName="user"
+                  secureTextEntry={false}
+                  onChangeText={handleChange("fullName")}
+                  value={values.fullName}
+                  autoCapitalize="words"
+                  placeholder="Full Name"
+                />
+                {touched.fullName && errors.fullName && (
+                  <InputErrorMessage error={errors.fullName} />
+                )}
                 <AppTextInput
                   iconName="mail"
                   secureTextEntry={false}
@@ -121,16 +110,15 @@ const signup = () => {
                   <InputErrorMessage error={errors.phoneNumber} />
                 )}
                 <AppTextInput
-                  iconName="lock"
-                  password={true}
-                  onChangeText={handleChange("password")}
-                  value={values.password}
+                  iconName="bank"
+                  secureTextEntry={false}
+                  onChangeText={handleChange("bankAccountNumber")}
+                  value={values.bankAccountNumber}
                   autoCapitalize="none"
-                  textContentType="password"
-                  placeholder="Password"
+                  placeholder="Bank Account Number"
                 />
-                {touched.password && errors.password && (
-                  <InputErrorMessage error={errors.password} />
+                {touched.bankAccountNumber && errors.bankAccountNumber && (
+                  <InputErrorMessage error={errors.bankAccountNumber} />
                 )}
                 <AppTextInput
                   iconName="lock"
@@ -144,32 +132,26 @@ const signup = () => {
                 {touched.confirmPassword && errors.confirmPassword && (
                   <InputErrorMessage error={errors.confirmPassword} />
                 )}
+                <AppTextInput
+                  iconName="lock"
+                  password={true}
+                  onChangeText={handleChange("password")}
+                  value={values.password}
+                  autoCapitalize="none"
+                  textContentType="password"
+                  placeholder="Password"
+                />
+                {touched.password && errors.password && (
+                  <InputErrorMessage error={errors.password} />
+                )}
 
                 <AppButton
                   btnColor="primaryColor"
-                  title="Login"
+                  title="add rider"
                   textColor="white"
                   onPress={handleSubmit}
                   borderRadius={"smallRadius"}
                 />
-                <AppButton
-                  btnColor="blackBackgroundColor"
-                  title="Register as a dispatch"
-                  textColor="white"
-                  onPress={() => router.push("/dispatchSignUp")}
-                  borderRadius={"smallRadius"}
-                />
-
-                <View style={styles.textContainer}>
-                  <View style={styles.linkContainer}>
-                    <Text style={{ color: "gray" }}>
-                      Already have an account?{" "}
-                    </Text>
-                    <TouchableOpacity onPress={() => router.push("/signin")}>
-                      <Text style={styles.text}>Login</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
               </>
             )}
           </Formik>
@@ -179,7 +161,7 @@ const signup = () => {
   );
 };
 
-export default signup;
+export default addOrder;
 
 const styles = StyleSheet.create({
   container: {

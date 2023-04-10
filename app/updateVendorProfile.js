@@ -1,11 +1,5 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
-import React, { useState } from "react";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+
 import { useRouter } from "expo-router";
 
 import { Formik } from "formik";
@@ -13,80 +7,78 @@ import * as Yup from "yup";
 
 import {
   AppButton,
-  AppErrorMessage,
   AppSafeAreaView,
   AppTextInput,
+  ImagePickerForm,
   InputErrorMessage,
+  RiderCard,
 } from "../components";
 import { PADDING } from "../constants/sizes";
 import { COLORS } from "../constants/colors_font";
-
-import usersApi from "../api/users";
-import useApi from "../hooks/useApi";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().trim().required().label("Email"),
-  username: Yup.string().required().label("Email"),
+  username: Yup.string().required().label("Username"),
+  firstName: Yup.string().required().label("First Name"),
+  lastName: Yup.string().required().label("Last Name"),
   phoneNumber: Yup.string()
     .required()
     .matches(phoneRegExp, "Enter a valid phone number")
     .max(16)
     .min(7)
     .label("Phone Number"),
-  password: Yup.string().required().label("Password"),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Passwords must match")
-    .required()
-    .label("Confirm Password"),
+  location: Yup.string().required().label("Location"),
+  profileImage: Yup.string().required().label("Profile Image"),
 });
 
-const signup = () => {
+const updateVendorProfile = () => {
   const router = useRouter();
-  const [fieldExist, setFieldExist] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const handleSubmit = async (user) => {
-    // setIsLoading(true);
-
-    const result = await usersApi.addUser(user);
-    // setIsLoading(false);
-
-    console.log(result.data);
-    console.log(result.problem);
-    if (!result.ok) {
-      if (result.data) setFieldExist(result.data.detail);
-      else {
-        setFieldExist("An unexpected error occured.");
-      }
-      return;
-    }
-    setFieldExist(false);
-    router.replace("signin");
-  };
 
   return (
     <AppSafeAreaView>
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={styles.titleText}>Sign Up</Text>
+          <Text style={styles.titleText}>Update Profile</Text>
           <Formik
             initialValues={{
+              firstName: "",
+              lastName: "",
               username: "",
               email: "",
               phoneNumber: "",
-              confirmPassword: "",
-              password: "",
+              location: "",
+              profileImage: "",
             }}
             validationSchema={validationSchema}
-            onSubmit={handleSubmit}
+            onSubmit={(values) => console.log(values)}
           >
             {({ handleChange, handleSubmit, values, errors, touched }) => (
               <>
-                <AppErrorMessage error={fieldExist} visible={fieldExist} />
+                <ImagePickerForm field={"profileImage"} />
                 <AppTextInput
-                  iconName="mail"
+                  secureTextEntry={false}
+                  onChangeText={handleChange("firstName")}
+                  value={values.firstName}
+                  autoCapitalize="words"
+                  placeholder="First Name"
+                />
+                {touched.firstName && errors.firstName && (
+                  <InputErrorMessage error={errors.firstName} />
+                )}
+                <AppTextInput
+                  secureTextEntry={false}
+                  onChangeText={handleChange("lastName")}
+                  value={values.lastName}
+                  autoCapitalize="words"
+                  placeholder="Last Name"
+                />
+                {touched.lastName && errors.lastName && (
+                  <InputErrorMessage error={errors.lastName} />
+                )}
+                <AppTextInput
                   secureTextEntry={false}
                   onChangeText={handleChange("email")}
                   value={values.email}
@@ -98,7 +90,6 @@ const signup = () => {
                   <InputErrorMessage error={errors.email} />
                 )}
                 <AppTextInput
-                  iconName="user"
                   secureTextEntry={false}
                   onChangeText={handleChange("username")}
                   value={values.username}
@@ -109,7 +100,6 @@ const signup = () => {
                   <InputErrorMessage error={errors.username} />
                 )}
                 <AppTextInput
-                  iconName="phone"
                   secureTextEntry={false}
                   onChangeText={handleChange("phoneNumber")}
                   value={values.phoneNumber}
@@ -121,55 +111,22 @@ const signup = () => {
                   <InputErrorMessage error={errors.phoneNumber} />
                 )}
                 <AppTextInput
-                  iconName="lock"
-                  password={true}
-                  onChangeText={handleChange("password")}
-                  value={values.password}
-                  autoCapitalize="none"
-                  textContentType="password"
-                  placeholder="Password"
+                  secureTextEntry={false}
+                  onChangeText={handleChange("location")}
+                  value={values.location}
+                  placeholder="Location"
                 />
-                {touched.password && errors.password && (
-                  <InputErrorMessage error={errors.password} />
-                )}
-                <AppTextInput
-                  iconName="lock"
-                  password={true}
-                  onChangeText={handleChange("confirmPassword")}
-                  value={values.confirmPassword}
-                  autoCapitalize="none"
-                  textContentType="password"
-                  placeholder="Confirm Password"
-                />
-                {touched.confirmPassword && errors.confirmPassword && (
-                  <InputErrorMessage error={errors.confirmPassword} />
+                {touched.location && errors.location && (
+                  <InputErrorMessage error={errors.location} />
                 )}
 
                 <AppButton
                   btnColor="primaryColor"
-                  title="Login"
+                  title="update profile"
                   textColor="white"
                   onPress={handleSubmit}
                   borderRadius={"smallRadius"}
                 />
-                <AppButton
-                  btnColor="blackBackgroundColor"
-                  title="Register as a dispatch"
-                  textColor="white"
-                  onPress={() => router.push("/dispatchSignUp")}
-                  borderRadius={"smallRadius"}
-                />
-
-                <View style={styles.textContainer}>
-                  <View style={styles.linkContainer}>
-                    <Text style={{ color: "gray" }}>
-                      Already have an account?{" "}
-                    </Text>
-                    <TouchableOpacity onPress={() => router.push("/signin")}>
-                      <Text style={styles.text}>Login</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
               </>
             )}
           </Formik>
@@ -179,7 +136,7 @@ const signup = () => {
   );
 };
 
-export default signup;
+export default updateVendorProfile;
 
 const styles = StyleSheet.create({
   container: {
@@ -203,5 +160,16 @@ const styles = StyleSheet.create({
     color: "gray",
     marginVertical: 15,
     alignSelf: "center",
+  },
+  section: {
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: 10,
+    marginVertical: 10,
+  },
+  suspend: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 });

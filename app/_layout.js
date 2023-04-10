@@ -56,5 +56,52 @@ export default () => (
         },
       }}
     />
+    <Stack.Screen
+      name="addRider"
+      options={{
+        title: "",
+      }}
+    />
+    <Stack.Screen
+      name="editRider"
+      options={{
+        title: "",
+      }}
+    />
+    <Stack.Screen
+      name="addOrder"
+      options={{
+        title: "",
+        headerTransparent: true,
+        headerTintColor: COLORS.white,
+        headerStyle: {
+          backgroundColor: null,
+        },
+      }}
+    />
+    <Stack.Screen
+      name="updateVendorProfile"
+      options={{
+        title: "",
+      }}
+    />
+    <Stack.Screen
+      name="paymentUrl"
+      options={{
+        title: "",
+      }}
+    />
+    <Stack.Screen
+      name="listRiderScreen"
+      options={{
+        title: "My Rider(s)",
+      }}
+    />
+    <Stack.Screen
+      name="pickLocations"
+      options={{
+        title: "",
+      }}
+    />
   </Stack>
 );

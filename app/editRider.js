@@ -2,10 +2,11 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
   ScrollView,
+  Switch,
+  Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRouter } from "expo-router";
 
 import { Formik } from "formik";
@@ -13,7 +14,6 @@ import * as Yup from "yup";
 
 import {
   AppButton,
-  AppErrorMessage,
   AppSafeAreaView,
   AppTextInput,
   InputErrorMessage,
@@ -21,72 +21,59 @@ import {
 import { PADDING } from "../constants/sizes";
 import { COLORS } from "../constants/colors_font";
 
-import usersApi from "../api/users";
-import useApi from "../hooks/useApi";
-
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().trim().required().label("Email"),
-  username: Yup.string().required().label("Email"),
+  username: Yup.string().required().label("Username"),
+  fullName: Yup.string().required().label("Username"),
   phoneNumber: Yup.string()
     .required()
     .matches(phoneRegExp, "Enter a valid phone number")
     .max(16)
     .min(7)
     .label("Phone Number"),
-  password: Yup.string().required().label("Password"),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Passwords must match")
-    .required()
-    .label("Confirm Password"),
+  bankAccountNumber: Yup.string().required().label("Bank Account Number"),
 });
 
-const signup = () => {
+const editRider = () => {
   const router = useRouter();
-  const [fieldExist, setFieldExist] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const handleSubmit = async (user) => {
-    // setIsLoading(true);
+  const [isEnabled, setIsEnabled] = useState(false);
 
-    const result = await usersApi.addUser(user);
-    // setIsLoading(false);
-
-    console.log(result.data);
-    console.log(result.problem);
-    if (!result.ok) {
-      if (result.data) setFieldExist(result.data.detail);
-      else {
-        setFieldExist("An unexpected error occured.");
-      }
-      return;
-    }
-    setFieldExist(false);
-    router.replace("signin");
+  const handleSwitchToggle = async (value) => {
+    setIsEnabled(value);
+    console.log("The value is: ", value);
   };
-
   return (
     <AppSafeAreaView>
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={styles.titleText}>Sign Up</Text>
+          <Text style={styles.titleText}>Update Rider</Text>
           <Formik
             initialValues={{
+              fullName: "",
               username: "",
               email: "",
               phoneNumber: "",
-              confirmPassword: "",
-              password: "",
+              bankAccountNumber: "",
             }}
             validationSchema={validationSchema}
-            onSubmit={handleSubmit}
+            onSubmit={(values) => console.log(values)}
           >
             {({ handleChange, handleSubmit, values, errors, touched }) => (
               <>
-                <AppErrorMessage error={fieldExist} visible={fieldExist} />
                 <AppTextInput
-                  iconName="mail"
+                  secureTextEntry={false}
+                  onChangeText={handleChange("fullName")}
+                  value={values.fullName}
+                  autoCapitalize="words"
+                  placeholder="Full Name"
+                />
+                {touched.fullName && errors.fullName && (
+                  <InputErrorMessage error={errors.fullName} />
+                )}
+                <AppTextInput
                   secureTextEntry={false}
                   onChangeText={handleChange("email")}
                   value={values.email}
@@ -98,7 +85,6 @@ const signup = () => {
                   <InputErrorMessage error={errors.email} />
                 )}
                 <AppTextInput
-                  iconName="user"
                   secureTextEntry={false}
                   onChangeText={handleChange("username")}
                   value={values.username}
@@ -109,7 +95,6 @@ const signup = () => {
                   <InputErrorMessage error={errors.username} />
                 )}
                 <AppTextInput
-                  iconName="phone"
                   secureTextEntry={false}
                   onChangeText={handleChange("phoneNumber")}
                   value={values.phoneNumber}
@@ -121,65 +106,50 @@ const signup = () => {
                   <InputErrorMessage error={errors.phoneNumber} />
                 )}
                 <AppTextInput
-                  iconName="lock"
-                  password={true}
-                  onChangeText={handleChange("password")}
-                  value={values.password}
-                  autoCapitalize="none"
-                  textContentType="password"
-                  placeholder="Password"
+                  secureTextEntry={false}
+                  onChangeText={handleChange("bankAccountNumber")}
+                  value={values.bankAccountNumber}
+                  placeholder="Bank Account Number"
+                  keyboardType="phone-pad"
                 />
-                {touched.password && errors.password && (
-                  <InputErrorMessage error={errors.password} />
-                )}
-                <AppTextInput
-                  iconName="lock"
-                  password={true}
-                  onChangeText={handleChange("confirmPassword")}
-                  value={values.confirmPassword}
-                  autoCapitalize="none"
-                  textContentType="password"
-                  placeholder="Confirm Password"
-                />
-                {touched.confirmPassword && errors.confirmPassword && (
-                  <InputErrorMessage error={errors.confirmPassword} />
+                {touched.bankAccountNumber && errors.bankAccountNumber && (
+                  <InputErrorMessage error={errors.bankAccountNumber} />
                 )}
 
                 <AppButton
                   btnColor="primaryColor"
-                  title="Login"
+                  title="update rider"
                   textColor="white"
                   onPress={handleSubmit}
                   borderRadius={"smallRadius"}
                 />
-                <AppButton
-                  btnColor="blackBackgroundColor"
-                  title="Register as a dispatch"
-                  textColor="white"
-                  onPress={() => router.push("/dispatchSignUp")}
-                  borderRadius={"smallRadius"}
-                />
-
-                <View style={styles.textContainer}>
-                  <View style={styles.linkContainer}>
-                    <Text style={{ color: "gray" }}>
-                      Already have an account?{" "}
-                    </Text>
-                    <TouchableOpacity onPress={() => router.push("/signin")}>
-                      <Text style={styles.text}>Login</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
               </>
             )}
           </Formik>
         </ScrollView>
+        <View style={styles.suspend}>
+          <Text style={{ textTransform: "uppercase", color: "grey" }}>
+            Suspend Rider
+          </Text>
+          <Pressable onPress={() => handleSwitchToggle(!isEnabled)}>
+            <Switch
+              trackColor={{
+                false: COLORS.inActivetrackColor,
+                true: COLORS.activeTrackColor,
+              }}
+              thumbColor={isEnabled ? COLORS.primaryColor : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={handleSwitchToggle}
+              value={isEnabled}
+            />
+          </Pressable>
+        </View>
       </View>
     </AppSafeAreaView>
   );
 };
 
-export default signup;
+export default editRider;
 
 const styles = StyleSheet.create({
   container: {
@@ -203,5 +173,16 @@ const styles = StyleSheet.create({
     color: "gray",
     marginVertical: 15,
     alignSelf: "center",
+  },
+  section: {
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: 10,
+    marginVertical: 10,
+  },
+  suspend: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 });

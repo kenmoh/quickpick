@@ -2,7 +2,6 @@ export const COLORS = {
   white: "#fff",
   headerText: "#16213E",
   primaryColor: "#1d9bf0",
-  primaryColor: "#1d9bf0",
   secondaryColor: "#1c93e4",
   inputLabelText: "#BABBC3",
   lightColor: "#ccc",
@@ -15,6 +14,8 @@ export const COLORS = {
   success: "#14C38E",
   appBackgroundColor: "#E9EFF2",
   blackBackgroundColor: "#000",
+  inActivetrackColor: "#767577",
+  activeTrackColor: "#81b0ff",
 };
 
 export const FONT_WEIGHT = {

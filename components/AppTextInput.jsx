@@ -77,10 +77,10 @@ export default AppTextInput;
 const styles = StyleSheet.create({
   errorText: {
     color: COLORS.errorText,
-    marginVertical: 5,
+    // marginVertical: 0,
   },
   input: {
-    marginBottom: 10,
+    marginBottom: 3,
   },
   labelText: {
     fontSize: 14,

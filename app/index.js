@@ -1,18 +1,26 @@
 import React from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Link, useRouter } from "expo-router";
 
+import { GOOFLE_MAP_API_KEY } from "@env";
+
 import AppSafeAreaView from "../components/AppSafeAreaView";
-import { Header } from "../components";
+import { Card, Header } from "../components";
+import { PADDING } from "../constants/sizes";
+import { COLORS } from "../constants/colors_font";
 
 const index = () => {
   const router = useRouter();
   return (
     <AppSafeAreaView>
-      <Header />
       <View style={styles.container}>
-        <Text style={styles.text}>Hello World!</Text>
-        <Link href="/userProfile">User PRofile</Link>
+        <Text style={styles.titleText}>Orders</Text>
+        <Card onPress={() => router.push("orderDetails")} />
+        <Card onPress={() => router.push("orderDetails")} />
+
+        <Link href="/signup" style={styles.link}>
+          Edit Vendor
+        </Link>
       </View>
     </AppSafeAreaView>
   );
@@ -23,11 +31,22 @@ export default index;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    paddingHorizontal: PADDING.horizontalPaddingSmall,
+    backgroundColor: COLORS.white,
   },
   text: {
     color: "black",
     fontSize: 35,
+  },
+  titleText: {
+    textAlign: "center",
+    marginVertical: 10,
+    fontWeight: "500",
+    color: COLORS.darkText,
+    fontSize: 22,
+  },
+  link: {
+    fontSize: 50,
+    marginTop: 200,
   },
 });

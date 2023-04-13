@@ -1,10 +1,10 @@
 import { Stack } from "expo-router";
 import { COLORS } from "../constants/colors_font";
-import { Provider } from "../auth/context";
+import { AuthProvider, LocationProvider } from "../auth/context";
 
 export default () => (
   <>
-    <Provider>
+    <AuthProvider>
       <Stack
         screenOptions={{
           headerStyle: {
@@ -61,17 +61,25 @@ export default () => (
             title: "",
           }}
         />
-        <Stack.Screen
-          name="addOrder"
-          options={{
-            title: "",
-            headerTransparent: true,
-            headerTintColor: COLORS.white,
-            headerStyle: {
-              backgroundColor: null,
-            },
-          }}
-        />
+        <LocationProvider>
+          <Stack.Screen
+            name="addOrder"
+            options={{
+              title: "",
+              headerTransparent: true,
+              headerTintColor: COLORS.white,
+              headerStyle: {
+                backgroundColor: null,
+              },
+            }}
+          />
+          <Stack.Screen
+            name="pickLocations"
+            options={{
+              title: "",
+            }}
+          />
+        </LocationProvider>
         <Stack.Screen
           name="updateVendorProfile"
           options={{
@@ -90,13 +98,7 @@ export default () => (
             title: "My Rider(s)",
           }}
         />
-        <Stack.Screen
-          name="pickLocations"
-          options={{
-            title: "",
-          }}
-        />
       </Stack>
-    </Provider>
+    </AuthProvider>
   </>
 );

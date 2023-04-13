@@ -2,6 +2,7 @@ import React from "react";
 import { useRouter, useSegments } from "expo-router";
 
 const AuthContext = React.createContext();
+export const locationContext = React.createContext();
 
 export default AuthContext;
 
@@ -32,7 +33,7 @@ function useProtectedRoute(user) {
   }, [user, segments]);
 }
 
-export function Provider({ children }) {
+export function AuthProvider({ children }) {
   const [user, setUser] = React.useState(null);
 
   useProtectedRoute(user);
@@ -48,5 +49,24 @@ export function Provider({ children }) {
     >
       {children}
     </AuthContext.Provider>
+  );
+}
+export function LocationProvider({ children }) {
+  const [origin, seOrigin] = React.useState(null);
+  const [destination, setDestination] = React.useState(null);
+
+  useProtectedRoute(user);
+
+  return (
+    <locationContext.Provider
+      value={{
+        origin,
+        seOrigin,
+        destination,
+        setDestination,
+      }}
+    >
+      {children}
+    </locationContext.Provider>
   );
 }

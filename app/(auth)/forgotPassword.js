@@ -1,30 +1,22 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import React from "react";
-import { Link, useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
-
 import {
   AppButton,
   AppSafeAreaView,
   AppTextInput,
   InputErrorMessage,
-} from "../components";
-import { PADDING } from "../constants/sizes";
-import { COLORS } from "../constants/colors_font";
+} from "../../components";
+import { PADDING } from "../../constants/sizes";
+import { COLORS } from "../../constants/colors_font";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().trim().required().label("Email"),
 });
 const forgotPassword = () => {
-  const router = useRouter();
   return (
     <AppSafeAreaView>
       <View style={styles.container}>

@@ -6,29 +6,30 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
 
 import {
+  AppActivityIndicator,
   AppButton,
   AppErrorMessage,
   AppSafeAreaView,
   AppTextInput,
   InputErrorMessage,
-} from "../components";
-import { PADDING } from "../constants/sizes";
-import { COLORS } from "../constants/colors_font";
-import usersApi from "../api/users";
+} from "../../components";
+import { PADDING } from "../../constants/sizes";
+import { COLORS } from "../../constants/colors_font";
+
+import usersApi from "../../api/users";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().trim().required().label("Email"),
-  companyName: Yup.string().required().label("Company Name"),
-  companyRegNum: Yup.string().required().label("Company Reg. Number"),
+  username: Yup.string().required().label("Email"),
   phoneNumber: Yup.string()
     .required()
     .matches(phoneRegExp, "Enter a valid phone number")
@@ -46,14 +47,18 @@ const signup = () => {
   const router = useRouter();
   const [fieldExist, setFieldExist] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const handleSubmit = async (dispatch) => {
-    // setIsLoading(true);
 
-    const result = await usersApi.addDispatch(dispatch);
-    console.log(result);
+  const signUpUser = async (user) => {
+    setIsLoading(true);
+
+    const result = await usersApi.addUser(user);
+    setIsLoading(false);
+
     console.log(result.data);
+    console.log(result.problem);
     console.log(result);
-    // setIsLoading(false);
+    console.log(user);
+
     if (!result.ok) {
       if (result.data) setFieldExist(result.data.detail);
       else {
@@ -64,6 +69,7 @@ const signup = () => {
     setFieldExist(false);
     router.replace("signin");
   };
+
   return (
     <AppSafeAreaView>
       <View style={styles.container}>
@@ -71,18 +77,18 @@ const signup = () => {
           <Text style={styles.titleText}>Sign Up</Text>
           <Formik
             initialValues={{
+              username: "",
               email: "",
-              companyName: "",
-              companyRegNum: "",
               phoneNumber: "",
               confirmPassword: "",
               password: "",
             }}
             validationSchema={validationSchema}
-            onSubmit={handleSubmit}
+            onSubmit={signUpUser}
           >
             {({ handleChange, handleSubmit, values, errors, touched }) => (
               <>
+                <AppActivityIndicator visible={isLoading} />
                 <AppErrorMessage error={fieldExist} visible={fieldExist} />
                 <AppTextInput
                   iconName="mail"
@@ -97,24 +103,15 @@ const signup = () => {
                   <InputErrorMessage error={errors.email} />
                 )}
                 <AppTextInput
+                  iconName="user"
                   secureTextEntry={false}
-                  onChangeText={handleChange("companyName")}
-                  value={values.companyName}
+                  onChangeText={handleChange("username")}
+                  value={values.username}
                   autoCapitalize="none"
-                  placeholder="Company Name"
+                  placeholder="Username"
                 />
-                {touched.companyName && errors.companyName && (
-                  <InputErrorMessage error={errors.companyName} />
-                )}
-                <AppTextInput
-                  secureTextEntry={false}
-                  onChangeText={handleChange("companyRegNum")}
-                  value={values.companyRegNum}
-                  autoCapitalize="none"
-                  placeholder="Company Reg. Number"
-                />
-                {touched.companyRegNum && errors.companyRegNum && (
-                  <InputErrorMessage error={errors.companyRegNum} />
+                {touched.username && errors.username && (
+                  <InputErrorMessage error={errors.username} />
                 )}
                 <AppTextInput
                   iconName="phone"
@@ -122,13 +119,12 @@ const signup = () => {
                   onChangeText={handleChange("phoneNumber")}
                   value={values.phoneNumber}
                   autoCapitalize="none"
-                  placeholder="Phone Number"
+                  placeholder="Phone Number(0809988776655)"
                   keyboardType="phone-pad"
                 />
                 {touched.phoneNumber && errors.phoneNumber && (
                   <InputErrorMessage error={errors.phoneNumber} />
                 )}
-
                 <AppTextInput
                   iconName="lock"
                   password={true}
@@ -163,17 +159,20 @@ const signup = () => {
                 />
                 <AppButton
                   btnColor="blackBackgroundColor"
-                  title="Register as a vendor"
+                  title="Register as a dispatch"
                   textColor="white"
-                  onPress={() => router.push("/signup")}
+                  onPress={() => router.push("/auth/dispatchSignUp")}
                   borderRadius={"smallRadius"}
                 />
+
                 <View style={styles.textContainer}>
                   <View style={styles.linkContainer}>
                     <Text style={{ color: "gray" }}>
                       Already have an account?{" "}
                     </Text>
-                    <TouchableOpacity onPress={() => router.push("auth/signin")}>
+                    <TouchableOpacity
+                      onPress={() => router.replace("/app/(auth)/signin")}
+                    >
                       <Text style={styles.text}>Login</Text>
                     </TouchableOpacity>
                   </View>

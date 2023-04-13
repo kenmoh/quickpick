@@ -6,7 +6,7 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
-import { useRouter } from "expo-router";
+import { useRouter, Stack } from "expo-router";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -17,19 +17,18 @@ import {
   AppSafeAreaView,
   AppTextInput,
   InputErrorMessage,
-} from "../components";
-import { PADDING } from "../constants/sizes";
-import { COLORS } from "../constants/colors_font";
-
-import usersApi from "../api/users";
-import useApi from "../hooks/useApi";
+} from "../../components";
+import { PADDING } from "../../constants/sizes";
+import { COLORS } from "../../constants/colors_font";
+import usersApi from "../../api/users";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().trim().required().label("Email"),
-  username: Yup.string().required().label("Email"),
+  companyName: Yup.string().required().label("Company Name"),
+  companyRegNum: Yup.string().required().label("Company Reg. Number"),
   phoneNumber: Yup.string()
     .required()
     .matches(phoneRegExp, "Enter a valid phone number")
@@ -47,14 +46,14 @@ const signup = () => {
   const router = useRouter();
   const [fieldExist, setFieldExist] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const handleSubmit = async (user) => {
+  const handleSubmit = async (dispatch) => {
     // setIsLoading(true);
 
-    const result = await usersApi.addUser(user);
-    // setIsLoading(false);
-
+    const result = await usersApi.addDispatch(dispatch);
+    console.log(result);
     console.log(result.data);
-    console.log(result.problem);
+    console.log(result);
+    // setIsLoading(false);
     if (!result.ok) {
       if (result.data) setFieldExist(result.data.detail);
       else {
@@ -65,7 +64,6 @@ const signup = () => {
     setFieldExist(false);
     router.replace("signin");
   };
-
   return (
     <AppSafeAreaView>
       <View style={styles.container}>
@@ -73,8 +71,9 @@ const signup = () => {
           <Text style={styles.titleText}>Sign Up</Text>
           <Formik
             initialValues={{
-              username: "",
               email: "",
+              companyName: "",
+              companyRegNum: "",
               phoneNumber: "",
               confirmPassword: "",
               password: "",
@@ -98,15 +97,24 @@ const signup = () => {
                   <InputErrorMessage error={errors.email} />
                 )}
                 <AppTextInput
-                  iconName="user"
                   secureTextEntry={false}
-                  onChangeText={handleChange("username")}
-                  value={values.username}
+                  onChangeText={handleChange("companyName")}
+                  value={values.companyName}
                   autoCapitalize="none"
-                  placeholder="Username"
+                  placeholder="Company Name"
                 />
-                {touched.username && errors.username && (
-                  <InputErrorMessage error={errors.username} />
+                {touched.companyName && errors.companyName && (
+                  <InputErrorMessage error={errors.companyName} />
+                )}
+                <AppTextInput
+                  secureTextEntry={false}
+                  onChangeText={handleChange("companyRegNum")}
+                  value={values.companyRegNum}
+                  autoCapitalize="none"
+                  placeholder="Company Reg. Number"
+                />
+                {touched.companyRegNum && errors.companyRegNum && (
+                  <InputErrorMessage error={errors.companyRegNum} />
                 )}
                 <AppTextInput
                   iconName="phone"
@@ -120,6 +128,7 @@ const signup = () => {
                 {touched.phoneNumber && errors.phoneNumber && (
                   <InputErrorMessage error={errors.phoneNumber} />
                 )}
+
                 <AppTextInput
                   iconName="lock"
                   password={true}
@@ -147,25 +156,26 @@ const signup = () => {
 
                 <AppButton
                   btnColor="primaryColor"
-                  title="Login"
+                  title="sign up"
                   textColor="white"
                   onPress={handleSubmit}
                   borderRadius={"smallRadius"}
                 />
                 <AppButton
                   btnColor="blackBackgroundColor"
-                  title="Register as a dispatch"
+                  title="Regisater as a vendor"
                   textColor="white"
-                  onPress={() => router.push("/dispatchSignUp")}
+                  onPress={() => router.push("/signup")}
                   borderRadius={"smallRadius"}
                 />
-
                 <View style={styles.textContainer}>
                   <View style={styles.linkContainer}>
                     <Text style={{ color: "gray" }}>
                       Already have an account?{" "}
                     </Text>
-                    <TouchableOpacity onPress={() => router.push("/signin")}>
+                    <TouchableOpacity
+                      onPress={() => router.push("/app/auth/signin")}
+                    >
                       <Text style={styles.text}>Login</Text>
                     </TouchableOpacity>
                   </View>

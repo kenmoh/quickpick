@@ -5,22 +5,24 @@ import { Link, useRouter } from "expo-router";
 import { GOOFLE_MAP_API_KEY } from "@env";
 
 import AppSafeAreaView from "../components/AppSafeAreaView";
-import { Card, Header } from "../components";
+import { Card } from "../components";
 import { PADDING } from "../constants/sizes";
 import { COLORS } from "../constants/colors_font";
+import { useAuth } from "../auth/context";
 
 const index = () => {
   const router = useRouter();
+  const { user } = useAuth();
   return (
     <AppSafeAreaView>
       <View style={styles.container}>
-        <Text style={styles.titleText}>Orders</Text>
+        <Text style={styles.titleText}>Orders {user?.username}</Text>
         <Card onPress={() => router.push("orderDetails")} />
         <Card onPress={() => router.push("orderDetails")} />
 
-        <Link href="/signup" style={styles.link}>
+        <Text style={styles.link} onPress={() => router.push("addOrder")}>
           Edit Vendor
-        </Link>
+        </Text>
       </View>
     </AppSafeAreaView>
   );

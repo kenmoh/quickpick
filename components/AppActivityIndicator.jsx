@@ -1,16 +1,15 @@
-import { StyleSheet, ActivityIndicator, View } from "react-native";
+import { StyleSheet, ActivityIndicator, View, Platform } from "react-native";
 import React from "react";
-import LottieView from "lottie-react-native";
 
 const AppActivityIndicator = ({ visible = false }) => {
   if (!visible) return null;
   return (
     <View style={styles.overlay}>
-      {/* <LottieView
-        source={require("../../assets/animations/circle-loading.json")}
-        autoPlay
-        loop
-      /> */}
+      <ActivityIndicator
+        animating={visible}
+        size={Platform.OS === "ios" ? "large" : 55}
+        color={"skyblue"}
+      />
     </View>
   );
 };
@@ -25,5 +24,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: 1,
     opacity: 0.8,
+    justifyContent: "center",
   },
 });

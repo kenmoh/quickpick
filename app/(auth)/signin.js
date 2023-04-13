@@ -5,20 +5,26 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React from "react";
-import { Link, useRouter } from "expo-router";
+import React, { useContext, useState } from "react";
+import { Stack, useRouter } from "expo-router";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
 
 import {
+  AppActivityIndicator,
   AppButton,
+  AppErrorMessage,
   AppSafeAreaView,
   AppTextInput,
   InputErrorMessage,
-} from "../components";
-import { PADDING } from "../constants/sizes";
-import { COLORS } from "../constants/colors_font";
+} from "../../components";
+import { PADDING } from "../../constants/sizes";
+import { COLORS } from "../../constants/colors_font";
+import { useAuth } from "../../auth/context";
+import authStorage from "../../auth/storage";
+import authApi from "../../api/auth";
+import jwtDecode from "jwt-decode";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().email().trim().required().label("Email"),
@@ -26,18 +32,43 @@ const validationSchema = Yup.object().shape({
 });
 const signin = () => {
   const router = useRouter();
+  const authContext = useAuth();
+  const { user } = useAuth();
+
+  const [loginFailed, setLoginFailed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async ({ username, password }) => {
+    setIsLoading(true);
+    const result = await authApi.loginApi(username, password);
+
+    setIsLoading(false);
+
+    if (!result.ok) return setLoginFailed(true);
+    setLoginFailed(false);
+
+    const user = jwtDecode(result.data.access_token);
+    authContext.setUser(user);
+    authStorage.storeToken(result.data.access_token);
+  };
   return (
     <AppSafeAreaView>
       <View style={styles.container}>
+        <Stack.Screen options={{ title: "" }} />
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={styles.titleText}>Sign In</Text>
           <Formik
             initialValues={{ username: "", password: "" }}
             validationSchema={validationSchema}
-            onSubmit={(values) => console.log(values)}
+            onSubmit={handleSubmit}
           >
             {({ handleChange, handleSubmit, values, errors, touched }) => (
               <>
+                <AppActivityIndicator visible={isLoading} />
+                <AppErrorMessage
+                  error="Invalid email and/or password!"
+                  visible={loginFailed}
+                />
                 <AppTextInput
                   iconName="mail"
                   secureTextEntry={false}
@@ -45,6 +76,7 @@ const signin = () => {
                   value={values.username}
                   autoCapitalize="none"
                   placeholder="Email"
+                  keyboardType="email-address"
                 />
                 {touched.username && errors.username && (
                   <InputErrorMessage error={errors.username} />
@@ -61,9 +93,7 @@ const signin = () => {
                 {touched.password && errors.password && (
                   <InputErrorMessage error={errors.password} />
                 )}
-                <TouchableOpacity
-                  onPress={() => router.push("/forgotPassword")}
-                >
+                <TouchableOpacity onPress={() => router.push("forgotPassword")}>
                   <Text
                     style={{
                       color: COLORS.primaryColor,
@@ -74,6 +104,7 @@ const signin = () => {
                     Forgot Password
                   </Text>
                 </TouchableOpacity>
+
                 <AppButton
                   btnColor="primaryColor"
                   title="Login"

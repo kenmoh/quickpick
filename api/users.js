@@ -22,7 +22,6 @@ const addUser = (user) => {
 
 const addDispatch = (dispatch) => {
   const data = new FormData();
-  data.set("Content-Type", "multipart/form-data");
   data.append("email", dispatch.email.toLowerCase().trim());
   data.append("phone_number", dispatch.phoneNumber);
   data.append("company_name", dispatch.companyName);

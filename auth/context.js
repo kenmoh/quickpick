@@ -10,6 +10,10 @@ export default AuthContext;
 export function useAuth() {
   return React.useContext(AuthContext);
 }
+// This hook can be used to access the order origin and destination.
+export function useOriginDestination() {
+  return React.useContext(AuthContext);
+}
 
 // This hook will protect the route access based on user authentication.
 function useProtectedRoute(user) {
@@ -55,14 +59,12 @@ export function LocationProvider({ children }) {
   const [origin, seOrigin] = React.useState(null);
   const [destination, setDestination] = React.useState(null);
 
-  useProtectedRoute(user);
-
   return (
     <locationContext.Provider
       value={{
         origin,
-        seOrigin,
         destination,
+        seOrigin,
         setDestination,
       }}
     >

@@ -5,63 +5,70 @@ import { AuthProvider, LocationProvider } from "../auth/context";
 export default () => (
   <>
     <AuthProvider>
-      <Stack
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: COLORS.primaryColor,
-          },
-          headerTintColor: "#fff",
-          headerTitleStyle: {
-            fontWeight: "bold",
-            fontSize: 22,
-          },
-          headerShadowVisible: false,
-        }}
-      >
-        <Stack.Screen
-          name="(auth)"
-          options={{
-            title: "",
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="index"
-          options={{
-            title: "",
-          }}
-        />
-        <Stack.Screen
-          name="dispatchSignUp"
-          options={{
-            title: "",
-          }}
-        />
-
-        <Stack.Screen
-          name="orderDetails"
-          options={{
-            title: "",
-            headerTransparent: true,
-            headerTintColor: COLORS.white,
+      <LocationProvider>
+        <Stack
+          screenOptions={{
             headerStyle: {
-              backgroundColor: null,
+              backgroundColor: COLORS.primaryColor,
             },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 22,
+            },
+            headerShadowVisible: false,
           }}
-        />
-        <Stack.Screen
-          name="addRider"
-          options={{
-            title: "",
-          }}
-        />
-        <Stack.Screen
-          name="editRider"
-          options={{
-            title: "",
-          }}
-        />
-        <LocationProvider>
+        >
+          <Stack.Screen
+            name="(auth)"
+            options={{
+              title: "",
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="main"
+            options={{
+              title: "",
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="index"
+            options={{
+              title: "",
+            }}
+          />
+          <Stack.Screen
+            name="dispatchSignUp"
+            options={{
+              title: "",
+            }}
+          />
+
+          <Stack.Screen
+            name="orderDetails"
+            options={{
+              title: "",
+              headerTransparent: true,
+              headerTintColor: COLORS.white,
+              headerStyle: {
+                backgroundColor: null,
+              },
+            }}
+          />
+          <Stack.Screen
+            name="addRider"
+            options={{
+              title: "",
+            }}
+          />
+          <Stack.Screen
+            name="editRider"
+            options={{
+              title: "",
+            }}
+          />
           <Stack.Screen
             name="addOrder"
             options={{
@@ -79,26 +86,26 @@ export default () => (
               title: "",
             }}
           />
-        </LocationProvider>
-        <Stack.Screen
-          name="updateVendorProfile"
-          options={{
-            title: "",
-          }}
-        />
-        <Stack.Screen
-          name="paymentUrl"
-          options={{
-            title: "",
-          }}
-        />
-        <Stack.Screen
-          name="listRiderScreen"
-          options={{
-            title: "My Rider(s)",
-          }}
-        />
-      </Stack>
+          <Stack.Screen
+            name="updateVendorProfile"
+            options={{
+              title: "",
+            }}
+          />
+          <Stack.Screen
+            name="paymentUrl"
+            options={{
+              title: "",
+            }}
+          />
+          <Stack.Screen
+            name="listRiderScreen"
+            options={{
+              title: "My Rider(s)",
+            }}
+          />
+        </Stack>
+      </LocationProvider>
     </AuthProvider>
   </>
 );

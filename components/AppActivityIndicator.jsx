@@ -18,7 +18,7 @@ export default AppActivityIndicator;
 
 const styles = StyleSheet.create({
   overlay: {
-    height: "100%",
+    height: "155%",
     width: "100%",
     backgroundColor: "white",
     position: "absolute",

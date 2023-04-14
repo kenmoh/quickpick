@@ -1,38 +1,36 @@
+import { StatusBar, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { StyleSheet, Text, View, StatusBar } from "react-native";
-import { Redirect, useRouter } from "expo-router";
+
+import { useRouter } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 
-import { GOOFLE_MAP_API_KEY } from "@env";
+import { PADDING } from "../../constants/sizes";
+import { COLORS } from "../../constants/colors_font";
+import { AppSafeAreaView, Card, FloatingActionButton } from "../../components";
+import { useAuth } from "../../auth/context";
 
-import AppSafeAreaView from "../components/AppSafeAreaView";
-import { Card, FloatingActionButton } from "../components";
-import { useAuth } from "../auth/context";
-import { PADDING } from "../constants/sizes";
-import { COLORS } from "../constants/colors_font";
-
-const index = () => {
+const orders = () => {
   const router = useRouter();
   const { user, signOut } = useAuth();
   return (
     <AppSafeAreaView>
       <StatusBar backgroundColor={COLORS.primaryColor} barStyle="auto" />
       <View style={styles.container}>
+        <Text style={styles.titleText}>Orders</Text>
         <Card onPress={() => router.push("orderDetails")} />
-
+        {/* Show Add button base on user(vendor) */}
         {user?.user_type === "vendor" && (
           <FloatingActionButton
             icon={<AntDesign name="plus" size={20} color="white" />}
-            onPress={() => router.push("addOrder")}
+            onPress={() => router.push("pickLocations")}
           />
         )}
       </View>
-      <Redirect href={"./main"} />
     </AppSafeAreaView>
   );
 };
 
-export default index;
+export default orders;
 
 const styles = StyleSheet.create({
   container: {

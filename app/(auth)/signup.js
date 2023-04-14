@@ -50,14 +50,8 @@ const signup = () => {
 
   const signUpUser = async (user) => {
     setIsLoading(true);
-
     const result = await usersApi.addUser(user);
     setIsLoading(false);
-
-    console.log(result.data);
-    console.log(result.problem);
-    console.log(result);
-    console.log(user);
 
     if (!result.ok) {
       if (result.data) setFieldExist(result.data.detail);
@@ -119,7 +113,7 @@ const signup = () => {
                   onChangeText={handleChange("phoneNumber")}
                   value={values.phoneNumber}
                   autoCapitalize="none"
-                  placeholder="Phone Number(0809988776655)"
+                  placeholder="0809988776655"
                   keyboardType="phone-pad"
                 />
                 {touched.phoneNumber && errors.phoneNumber && (
@@ -161,7 +155,7 @@ const signup = () => {
                   btnColor="blackBackgroundColor"
                   title="Register as a dispatch"
                   textColor="white"
-                  onPress={() => router.push("/auth/dispatchSignUp")}
+                  onPress={() => router.push("dispatchSignUp")}
                   borderRadius={"smallRadius"}
                 />
 

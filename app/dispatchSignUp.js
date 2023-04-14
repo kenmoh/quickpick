@@ -12,6 +12,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 import {
+  AppActivityIndicator,
   AppButton,
   AppErrorMessage,
   AppSafeAreaView,
@@ -46,14 +47,11 @@ const signup = () => {
   const router = useRouter();
   const [fieldExist, setFieldExist] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const handleSubmit = async (dispatch) => {
-    // setIsLoading(true);
-
+  const signUpDispatch = async (dispatch) => {
+    setIsLoading(true);
     const result = await usersApi.addDispatch(dispatch);
-    console.log(result);
-    console.log(result.data);
-    console.log(result);
-    // setIsLoading(false);
+    setIsLoading(false);
+
     if (!result.ok) {
       if (result.data) setFieldExist(result.data.detail);
       else {
@@ -79,10 +77,11 @@ const signup = () => {
               password: "",
             }}
             validationSchema={validationSchema}
-            onSubmit={handleSubmit}
+            onSubmit={signUpDispatch}
           >
             {({ handleChange, handleSubmit, values, errors, touched }) => (
               <>
+                <AppActivityIndicator visible={isLoading} />
                 <AppErrorMessage error={fieldExist} visible={fieldExist} />
                 <AppTextInput
                   iconName="mail"
@@ -173,7 +172,9 @@ const signup = () => {
                     <Text style={{ color: "gray" }}>
                       Already have an account?{" "}
                     </Text>
-                    <TouchableOpacity onPress={() => router.push("auth/signin")}>
+                    <TouchableOpacity
+                      onPress={() => router.push("auth/signin")}
+                    >
                       <Text style={styles.text}>Login</Text>
                     </TouchableOpacity>
                   </View>

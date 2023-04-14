@@ -4,6 +4,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { Stack, useRouter } from "expo-router";
@@ -33,7 +34,6 @@ const validationSchema = Yup.object().shape({
 const signin = () => {
   const router = useRouter();
   const authContext = useAuth();
-  const { user } = useAuth();
 
   const [loginFailed, setLoginFailed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,6 +53,8 @@ const signin = () => {
   };
   return (
     <AppSafeAreaView>
+      <StatusBar backgroundColor={COLORS.primaryColor} barStyle="auto" />
+
       <View style={styles.container}>
         <Stack.Screen options={{ title: "" }} />
         <ScrollView showsVerticalScrollIndicator={false}>

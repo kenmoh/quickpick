@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, StatusBar } from "react-native";
 import React from "react";
 import { Stack, useRouter } from "expo-router";
 
@@ -19,6 +19,7 @@ const validationSchema = Yup.object().shape({
 const forgotPassword = () => {
   return (
     <AppSafeAreaView>
+      <StatusBar backgroundColor={COLORS.primaryColor} barStyle="auto" />
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={styles.titleText}>Recover Password</Text>

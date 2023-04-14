@@ -4,6 +4,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  StatusBar,
 } from "react-native";
 import React, { useState } from "react";
 import { useRouter, Stack } from "expo-router";
@@ -66,6 +67,7 @@ const signup = () => {
   };
   return (
     <AppSafeAreaView>
+      <StatusBar backgroundColor={COLORS.primaryColor} barStyle="auto" />
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={styles.titleText}>Sign Up</Text>

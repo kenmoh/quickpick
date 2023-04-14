@@ -5,34 +5,25 @@ import { AntDesign } from "@expo/vector-icons";
 
 import { GOOFLE_MAP_API_KEY } from "@env";
 
-import AppSafeAreaView from "../components/AppSafeAreaView";
-import { Card, FloatingActionButton } from "../components";
-import { useAuth } from "../auth/context";
-import { PADDING } from "../constants/sizes";
-import { COLORS } from "../constants/colors_font";
+import { AppSafeAreaView, Card, FloatingActionButton } from "../../components";
+import { useAuth } from "../../auth/context";
+import { PADDING } from "../../constants/sizes";
+import { COLORS } from "../../constants/colors_font";
 
-const index = () => {
+const myOrders = () => {
   const router = useRouter();
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   return (
     <AppSafeAreaView>
       <StatusBar backgroundColor={COLORS.primaryColor} barStyle="auto" />
       <View style={styles.container}>
         <Card onPress={() => router.push("orderDetails")} />
-
-        {user?.user_type === "vendor" && (
-          <FloatingActionButton
-            icon={<AntDesign name="plus" size={20} color="white" />}
-            onPress={() => router.push("addOrder")}
-          />
-        )}
       </View>
-      <Redirect href={"./main"} />
     </AppSafeAreaView>
   );
 };
 
-export default index;
+export default myOrders;
 
 const styles = StyleSheet.create({
   container: {

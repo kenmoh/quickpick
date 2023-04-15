@@ -10,15 +10,20 @@ import {
   TriggeringView,
   ImageHeaderScrollView,
 } from "react-native-image-header-scroll-view";
-import { AppButton, CardText, Divider, OrderBtn } from "../components";
+
+import { useSearchParams } from "expo-router";
+
+import { CardText, Divider, OrderBtn } from "../components";
 import { COLORS } from "../constants/colors_font";
+import orderApi from "../api/orders";
 
 const MIN_HEIGHT = Platform.OS === "ios" ? 90 : 55;
 const MAX_HEIGHT = 300;
 
 const orderDetails = () => {
-  const img =
-    "https://a.cdn-hotels.com/gdcs/production0/d1513/35c1c89e-408c-4449-9abe-f109068f40c0.jpg?impolicy=fcrop&w=800&h=533&q=medium";
+  const params = useSearchParams();
+  const order = params;
+
   return (
     <>
       <View style={styles.container}>
@@ -26,7 +31,7 @@ const orderDetails = () => {
         <ImageHeaderScrollView
           maxHeight={MAX_HEIGHT}
           minHeight={MIN_HEIGHT}
-          headerImage={{ uri: img }}
+          headerImage={{ uri: order?.order_photo_url }}
           showsVerticalScrollIndicator={false}
         >
           <View style={{ height: 800 }}>
@@ -36,69 +41,61 @@ const orderDetails = () => {
                 <Divider margin={10} />
                 <CardText
                   title="Sender"
-                  subTitle={"Kenmoh"}
+                  subTitle={order?.vendor_username}
                   textTransform={"uppercase"}
                 />
                 <Divider margin={10} />
                 <CardText
                   title="Sender Phone No."
-                  subTitle={"09099009988"}
+                  subTitle={order?.owner_phone_number}
                   textTransform={"uppercase"}
                 />
                 <Divider margin={10} />
                 <CardText
                   title="Item Name"
-                  subTitle={"Cheese Burger"}
+                  subTitle={order?.name}
                   textTransform={"uppercase"}
                 />
                 <Divider margin={10} />
                 <CardText
                   title="Origin"
-                  subTitle={"Lakowe"}
+                  subTitle={order?.origin}
                   textTransform={"uppercase"}
                 />
                 <Divider margin={10} />
                 <CardText
                   title="Destination"
-                  subTitle={"Lekki"}
+                  subTitle={order?.location}
                   textTransform={"uppercase"}
                 />
                 <Divider margin={10} />
                 <CardText
                   title="Distance"
-                  subTitle={"2km"}
+                  subTitle={`${order?.distance} km`}
                   textTransform={"uppercase"}
                 />
                 <Divider margin={10} />
                 <CardText
                   title="Cost"
-                  subTitle={4300}
+                  subTitle={`NGN ${order?.total_cost}`}
                   textTransform={"uppercase"}
                 />
                 <Divider margin={10} />
                 <CardText
                   title="Service charge"
-                  subTitle={300}
+                  subTitle={order?.deduction}
                   textTransform={"uppercase"}
                 />
                 <Divider margin={10} />
                 <CardText
                   title="AMOUNT PAYABLE"
-                  subTitle={4000}
+                  subTitle={order?.amount_payable}
                   textTransform={"uppercase"}
                 />
                 <Divider margin={15} />
                 <CardText title="description" textTransform={"uppercase"} />
                 <Divider margin={3} />
-                <Text style={styles.description}>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </Text>
+                <Text style={styles.description}>{order?.description}</Text>
               </View>
             </TriggeringView>
           </View>

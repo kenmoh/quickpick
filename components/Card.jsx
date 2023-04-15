@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "expo-router";
+
 import Divider from "./Divider";
 import { COLORS } from "../constants/colors_font";
 
@@ -12,38 +14,31 @@ const Card = ({ order, onPress }) => {
           <View style={styles.header}>
             <Image
               source={{
-                uri: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
+                uri: "https://mohdelivery.s3.amazonaws.com/ffaf75dbfa4909bfd6d7f08cpost.png",
               }}
+              // source={{ uri: order?.order_photo_url }}
               style={styles.imageStyle}
               resizeMode="contain"
             />
             <View style={styles.text}>
-              <Text style={styles.title}>Order</Text>
-              <Text style={styles.amount}>NGN 3000</Text>
+              <Text style={styles.title}>{order?.name}</Text>
+              <Text style={styles.amount}>NGN {order?.total_cost}</Text>
             </View>
           </View>
-          <Text style={styles.date}>12-04-2023</Text>
+          <Text style={styles.date}>{order?.created_at}</Text>
         </View>
         <Divider />
         <View style={styles.body}>
-          <Text style={styles.title}>Lakowe</Text>
+          <Text style={styles.title}>{order?.origin}</Text>
           <AntDesign name="swapright" size={24} color={COLORS.darkText} />
-          <Text style={styles.title}>Lekki</Text>
+          <Text style={styles.title}>{order?.destination}</Text>
         </View>
         <Divider />
         <View style={styles.footer}>
           <View style={styles.footerText}>
             <Text style={styles.title}>Distance: </Text>
-            <Text style={styles.distance}>4.88 km</Text>
+            <Text style={styles.distance}>{order?.distance} km</Text>
           </View>
-
-          {/* {order.is_picked_up ? (
-            <Text style={styles.btnText}>Pending</Text>
-          ) : order.order_is_delivered ? (
-            <Text style={styles.btnText}>Delivered</Text>
-          ) : (
-            ""
-          )} */}
         </View>
       </View>
     </TouchableOpacity>

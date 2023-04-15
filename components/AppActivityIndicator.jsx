@@ -1,10 +1,10 @@
 import { StyleSheet, ActivityIndicator, View, Platform } from "react-native";
 import React from "react";
 
-const AppActivityIndicator = ({ visible = false }) => {
+const AppActivityIndicator = ({ visible = false, height = "155%" }) => {
   if (!visible) return null;
   return (
-    <View style={styles.overlay}>
+    <View style={[styles.overlay, { height: height }]}>
       <ActivityIndicator
         animating={visible}
         size={Platform.OS === "ios" ? "large" : 55}
@@ -18,7 +18,6 @@ export default AppActivityIndicator;
 
 const styles = StyleSheet.create({
   overlay: {
-    height: "155%",
     width: "100%",
     backgroundColor: "white",
     position: "absolute",

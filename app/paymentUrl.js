@@ -1,15 +1,16 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
+import { useSearchParams } from "expo-router";
 
 import { WebView } from "react-native-webview";
 import { BUTTON_SIZE } from "../constants/sizes";
 import { COLORS } from "../constants/colors_font";
-import { AppImagePicker } from "../components";
 
-const paymentUrl = ({
-  url = "https://ravemodal-dev.herokuapp.com/v3/hosted/pay/d1b222ac964b749e0663",
-}) => {
+const paymentUrl = () => {
   const [showWebView, setShowWebView] = React.useState(false);
+  const params = useSearchParams();
+
+  const { payment_url, total_cost } = params;
 
   const handleOpenWebView = () => {
     setShowWebView(true);
@@ -17,17 +18,15 @@ const paymentUrl = ({
 
   return (
     <View style={styles.container}>
-      <AppImagePicker />
-      {!showWebView && <Text style={styles.text}>Pay to N500 list item</Text>}
       {showWebView ? (
         <WebView
           source={{
-            uri: url,
+            uri: payment_url,
           }}
         />
       ) : (
         <TouchableOpacity onPress={handleOpenWebView} style={styles.button}>
-          <Text style={styles.buttonText}>pay</Text>
+          <Text style={styles.buttonText}>PAY N{total_cost}</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -56,7 +55,6 @@ const styles = StyleSheet.create({
   buttonText: {
     textTransform: "uppercase",
     fontWeight: "bold",
-    letterSpacing: 10,
     fontSize: 18,
     color: COLORS.white,
   },

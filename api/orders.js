@@ -8,6 +8,7 @@ const getCustomerListings = () => client.get(`${endpoint}customer-order`);
 const getVendorListings = () => client.get(`${endpoint}vendor-orders`);
 const pickUpOrder = (order_id) =>
   client.put(`${endpoint}${order_id}/pick-up-order`);
+const orderDetails = (orderId) => client.get(`${endpoint}${orderId}`);
 const confirmOrderDelivery = (order_id) =>
   client.put(`${endpoint}${order_id}/confirm-delivery`);
 const orderDelievered = (order_id) =>
@@ -20,7 +21,7 @@ const addItem = (item) => {
   data.append("origin", item.origin);
   data.append("destination", item.destination);
   data.append("distance", item.distance);
-  data.append("profile_image", {
+  data.append("image", {
     type: "image/jpeg",
     uri: item.orderPhotoUrl,
     name: item.orderPhotoUrl,
@@ -37,4 +38,5 @@ export default {
   getVendorListings,
   pickUpOrder,
   orderDelievered,
+  orderDetails,
 };

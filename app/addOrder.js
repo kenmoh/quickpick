@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ScrollView, StatusBar } from "react-native";
-import { useRouter } from "expo-router";
+import { useRouter, Link, Redirect, useNavigation } from "expo-router";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import MapView, { Marker } from "react-native-maps";
@@ -8,13 +8,16 @@ import {
   AppButton,
   AppSafeAreaView,
   AppTextInput,
-  AppImagePicker,
   InputErrorMessage,
   ImagePickerForm,
+  AppActivityIndicator,
+  AppErrorMessage,
 } from "../components";
 import { PADDING } from "../constants/sizes";
 import { COLORS } from "../constants/colors_font";
 import { GOOFLE_MAP_API_KEY } from "@env";
+import ordersApi from "../api/orders";
+import { useState } from "react";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -30,8 +33,29 @@ const validationSchema = Yup.object().shape({
 
 const addOrder = () => {
   const router = useRouter();
+  const navigation = useNavigation();
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleAddOrder = async (item, { resetForm }) => {
+    setIsLoading(true);
+    const result = await ordersApi.addItem(item);
+    setIsLoading(false);
+
+    if (!result.ok) {
+      if (result.data) setError("Something went wrong");
+      return;
+    }
+    navigation.navigate("paymentUrl", {
+      payment_url: result.data.payment_url,
+      total_cost: result.data.total_cost,
+    });
+    resetForm();
+  };
   return (
     <AppSafeAreaView>
+      <AppActivityIndicator visible={isLoading} height="100%" />
+      <AppErrorMessage error={error} visible={error} />
       <StatusBar backgroundColor="#66000000" barStyle="dark-content" />
       <View style={styles.map}>
         <MapView
@@ -57,7 +81,7 @@ const addOrder = () => {
             orderPhotoUrl: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={handleAddOrder}
         >
           {({ handleChange, handleSubmit, values, errors, touched }) => (
             <>

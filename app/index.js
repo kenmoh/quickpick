@@ -13,7 +13,7 @@ import { COLORS } from "../constants/colors_font";
 
 const index = () => {
   const router = useRouter();
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   return (
     <AppSafeAreaView>
       <StatusBar backgroundColor={COLORS.primaryColor} barStyle="auto" />

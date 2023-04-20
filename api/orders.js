@@ -26,7 +26,7 @@ const addItem = (item) => {
     uri: item.orderPhotoUrl,
     name: item.orderPhotoUrl,
   });
-
+  console.log(data.image);
   return client.post(endpoint, data);
 };
 

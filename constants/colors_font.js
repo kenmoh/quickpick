@@ -16,6 +16,7 @@ export const COLORS = {
   blackBackgroundColor: "#000",
   inActivetrackColor: "#767577",
   activeTrackColor: "#81b0ff",
+  borderColor: "#ccc",
 };
 
 export const FONT_WEIGHT = {

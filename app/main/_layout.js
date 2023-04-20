@@ -23,8 +23,8 @@ export default () => {
         name="orders"
         options={{
           title: "",
-          tabBarIcon: ({ size, color }) => (
-            <AntDesign name="home" size={size} color={color} />
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="home" size={20} color={color} />
           ),
         }}
       />
@@ -32,8 +32,8 @@ export default () => {
         name="myOrders"
         options={{
           title: "My Orders",
-          tabBarIcon: ({ size, color }) => (
-            <Feather name="list" size={size} color={color} />
+          tabBarIcon: ({ color }) => (
+            <Feather name="list" size={20} color={color} />
           ),
         }}
       />
@@ -42,8 +42,8 @@ export default () => {
         name="notification"
         options={{
           title: "",
-          tabBarIcon: ({ size, color }) => (
-            <AntDesign name="bells" size={size} color={color} />
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="bells" size={20} color={color} />
           ),
         }}
       />
@@ -51,8 +51,8 @@ export default () => {
         name="profile"
         options={{
           title: "",
-          tabBarIcon: ({ size, color }) => (
-            <AntDesign name="user" size={size} color={color} />
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="user" size={20} color={color} />
           ),
         }}
       />

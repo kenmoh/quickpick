@@ -18,3 +18,4 @@ export { default as RiderCard } from "./RiderCard";
 export { default as AppImagePicker } from "./AppImagePicker";
 export { default as ImagePickerForm } from "./ImagePickerForm";
 export { default as SubmitButton } from "./SubmitButton";
+export { default as ProfileLink } from "./ProfileLink";

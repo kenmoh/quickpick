@@ -106,6 +106,7 @@ const signup = () => {
                   <InputErrorMessage error={errors.companyName} />
                 )}
                 <AppTextInput
+                  iconName="trademark"
                   secureTextEntry={false}
                   onChangeText={handleChange("companyRegNum")}
                   value={values.companyRegNum}

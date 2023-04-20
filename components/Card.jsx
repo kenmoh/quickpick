@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "expo-router";
 
 import Divider from "./Divider";
 import { COLORS } from "../constants/colors_font";
@@ -11,7 +12,14 @@ const Card = ({ order, onPress }) => {
       <View style={styles.card}>
         <View style={styles.headerContainer}>
           <View style={styles.header}>
-            <Image source={{ uri: order?.order_photo_url }} />
+            <Image
+              source={{
+                uri: "https://mohdelivery.s3.amazonaws.com/ffaf75dbfa4909bfd6d7f08cpost.png",
+              }}
+              // source={{ uri: order?.order_photo_url }}
+              style={styles.imageStyle}
+              resizeMode="cover"
+            />
             <View style={styles.text}>
               <Text style={styles.title}>{order?.name}</Text>
               <Text style={styles.amount}>NGN {order?.total_cost}</Text>

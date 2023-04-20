@@ -62,7 +62,9 @@ const orders = () => {
                   deduction: item.deduction,
                   amount_payable: item.amount_payable,
                   description: item.description,
-                  order_photo_url: item.order_photo_url,
+                  order_photo_url:
+                    "https://mohdelivery.s3.amazonaws.com/8666c156c3e7e4a85d648d78twitter.jpeg",
+                  // order_photo_url: item.order_photo_url,
                 })
               }
             />

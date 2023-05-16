@@ -30,7 +30,7 @@ const addRider = (rider) => {
   const data = new FormData();
   data.append("email", rider.email.toLowerCase().trim());
   data.append("username", rider.username.toLowerCase().trim());
-  data.append("full_name", rider.full_name.toLowerCase().trim());
+  data.append("full_name", rider.fullName.toLowerCase().trim());
   data.append("phone_number", rider.phoneNumber);
   data.append("bank_account_number", rider.bankAccountNumber);
   data.append("bank_name", rider.bankName);

@@ -56,10 +56,12 @@ const profile = () => {
             screenName={"Profile"}
             onPress={() => router.push("userProfile")}
           />
-          <ProfileLink
-            screenName={"Wallet"}
-            onPress={() => router.push("wallet")}
-          />
+          {user?.user_type === "dispatcher" && (
+            <ProfileLink
+              screenName={"Wallet"}
+              onPress={() => router.push("wallet")}
+            />
+          )}
           <ProfileLink
             screenName={"About"}
             onPress={() => router.push("about")}
@@ -131,6 +133,6 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 12,
     color: COLORS.darkText,
-    marginBottom: 25,
+    marginBottom: 5,
   },
 });

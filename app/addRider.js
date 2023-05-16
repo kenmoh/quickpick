@@ -5,20 +5,23 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "expo-router";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
 
 import {
+  AppActivityIndicator,
   AppButton,
+  AppErrorMessage,
   AppSafeAreaView,
   AppTextInput,
   InputErrorMessage,
 } from "../components";
 import { PADDING } from "../constants/sizes";
 import { COLORS } from "../constants/colors_font";
+import usersApi from "../api/users";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -34,6 +37,7 @@ const validationSchema = Yup.object().shape({
     .min(7)
     .label("Phone Number"),
   bankAccountNumber: Yup.string().required().label("Bank Account Number"),
+  bankName: Yup.string().required().label("Bank Name"),
   password: Yup.string().required().label("Password"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords must match")
@@ -41,10 +45,26 @@ const validationSchema = Yup.object().shape({
     .label("Confirm Password"),
 });
 
-const addOrder = () => {
+const addRider = () => {
   const router = useRouter();
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const handleAddRider = async (rider, { resetForm }) => {
+    setIsLoading(true);
+    const result = await usersApi.addRider(rider);
+    setIsLoading(false);
+
+    if (!result.ok) {
+      if (result.data) setError("Something went wrong");
+      return;
+    }
+    resetForm();
+  };
+
   return (
     <AppSafeAreaView>
+      <AppActivityIndicator visible={isLoading} height="100%" />
+      <AppErrorMessage error={error} visible={error} />
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={styles.titleText}>Add Rider</Text>
@@ -60,7 +80,7 @@ const addOrder = () => {
               password: "",
             }}
             validationSchema={validationSchema}
-            onSubmit={(values) => console.log(values)}
+            onSubmit={handleAddRider}
           >
             {({ handleChange, handleSubmit, values, errors, touched }) => (
               <>
@@ -173,7 +193,7 @@ const addOrder = () => {
   );
 };
 
-export default addOrder;
+export default addRider;
 
 const styles = StyleSheet.create({
   container: {

@@ -4,7 +4,14 @@ import Divider from "./Divider";
 import { Feather } from "@expo/vector-icons";
 import { COLORS } from "../constants/colors_font";
 
-const Transaction = ({ bgColor = "#FFA69E", iconColor = "red", icon }) => {
+const Transaction = ({
+  bgColor = "#FFA69E",
+  iconColor = "red",
+  icon,
+  vendorName,
+  date,
+  amount,
+}) => {
   return (
     <>
       <Divider />
@@ -14,11 +21,11 @@ const Transaction = ({ bgColor = "#FFA69E", iconColor = "red", icon }) => {
             <Feather name={icon} size={20} color={iconColor} />
           </View>
           <View>
-            <Text style={styles.vendorText}>QuickPick Ltd</Text>
-            <Text style={styles.date}>20-04-2013</Text>
+            <Text style={styles.vendorText}>{vendorName}</Text>
+            <Text style={styles.date}>{date}</Text>
           </View>
         </View>
-        <Text style={styles.vendorText}>-N 3300</Text>
+        <Text style={styles.vendorText}>N {amount}</Text>
       </View>
     </>
   );

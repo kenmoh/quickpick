@@ -2,16 +2,18 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import React from "react";
 
-import { useRouter } from "expo-router";
+import { useRouter, useNavigation } from "expo-router";
 
 import { AppSafeAreaView, Divider, ProfileLink } from "../../components";
 import { COLORS } from "../../constants/colors_font";
 import { PADDING } from "../../constants/sizes";
 import { useAuth } from "../../auth/context";
+import walletsApi from "../../api/wallets";
 
 const profile = () => {
   const router = useRouter();
   const { signOut, user } = useAuth();
+  const navigation = useNavigation();
   const handleDeleteAccount = () => {
     console.log("Account Deleted!!!");
   };
@@ -59,7 +61,11 @@ const profile = () => {
           {user?.user_type === "dispatcher" && (
             <ProfileLink
               screenName={"Wallet"}
-              onPress={() => router.push("wallet")}
+              onPress={() =>
+                navigation.navigate("wallet", {
+                  userId: user.id,
+                })
+              }
             />
           )}
           <ProfileLink

@@ -1,16 +1,42 @@
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import React from "react";
+import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { useNavigation } from "expo-router";
 
 import { COLORS } from "../constants/colors_font";
 import { BUTTON_SIZE, PADDING } from "../constants/sizes";
 import { Transaction } from "../components";
+import { useAuth } from "../auth/context";
+import walletsApi from "../api/wallets";
 
 const wallet = () => {
+  const navigation = useNavigation();
+  const { user } = useAuth();
+  const [wallet, setWallet] = useState(null);
+  const [transactions, setTransactions] = useState([]);
+
+  console.log(transactions);
+
+  const getDispatcUserhWallet = async () => {
+    const result = await walletsApi.getDispatchWallet(user.id);
+    setWallet(result.data);
+    setTransactions(result.data.received_funds);
+
+    if (!result.ok) {
+      if (result.data) setError(result.problem);
+      return;
+    }
+  };
+
+  useEffect(() => {
+    if (navigation.isFocused()) {
+      getDispatcUserhWallet();
+    }
+  }, [navigation.isFocused()]);
   return (
     <View style={styles.container}>
       <View style={styles.wallet}>
         <Text style={styles.text}>Balance</Text>
-        <Text style={styles.balText}>N 300</Text>
+        <Text style={styles.balText}>{`N ${wallet?.balance}`}</Text>
         <Text style={styles.text}>Account Number: 2020334455</Text>
       </View>
       <Pressable
@@ -19,11 +45,20 @@ const wallet = () => {
       >
         <Text style={styles.btnText}>Request Fund</Text>
       </Pressable>
-      <Transaction icon="arrow-up-right" />
-      <Transaction icon="arrow-up-right" />
-      <Transaction bgColor="#A9FBC3" iconColor="green" icon="arrow-down-left" />
-      <Transaction bgColor="#A9FBC3" iconColor="green" icon="arrow-down-left" />
-      <Transaction bgColor="#A9FBC3" iconColor="green" icon="arrow-down-left" />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {transactions?.map((transaction) => (
+          <Transaction
+            key={transaction.id}
+            bgColor="#A9FBC3"
+            iconColor="green"
+            icon="arrow-down-left"
+            vendorName={transaction?.vendor_username}
+            amount={transaction?.amount_payable}
+            date={transaction?.updated_at}
+          />
+        ))}
+      </ScrollView>
+
       <Transaction icon="arrow-up-right" />
     </View>
   );

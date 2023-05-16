@@ -1,14 +1,10 @@
 import client from "./client";
 
-// TODO Login
 // TODO Update user
-// TODO Update vendor
-// TODO List users
-// TODO List vendors
-// TODO User and Vendor profile
 
 const dispatchEndpoint = "/users/register-dispatch";
-const vendorEndpoint = "/users/register";
+const riderEndpoint = "/users/register-rider";
+const userEndpoint = "/users/register";
 
 const addUser = (user) => {
   const data = new FormData();
@@ -17,7 +13,7 @@ const addUser = (user) => {
   data.append("phone_number", user.phoneNumber);
   data.append("password", user.password);
 
-  return client.post(vendorEndpoint, data);
+  return client.post(userEndpoint, data);
 };
 
 const addDispatch = (dispatch) => {
@@ -30,8 +26,21 @@ const addDispatch = (dispatch) => {
 
   return client.post(dispatchEndpoint, data);
 };
+const addRider = (rider) => {
+  const data = new FormData();
+  data.append("email", rider.email.toLowerCase().trim());
+  data.append("username", rider.username.toLowerCase().trim());
+  data.append("full_name", rider.full_name.toLowerCase().trim());
+  data.append("phone_number", rider.phoneNumber);
+  data.append("bank_account_number", rider.bankAccountNumber);
+  data.append("bank_name", rider.bankName);
+  data.append("password", rider.password);
+
+  return client.post(riderEndpoint, data);
+};
 
 export default {
-  addUser,
   addDispatch,
+  addUser,
+  addRider,
 };

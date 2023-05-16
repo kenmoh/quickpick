@@ -55,6 +55,7 @@ const addOrder = () => {
               email: "",
               phoneNumber: "",
               bankAccountNumber: "",
+              bankName: "",
               confirmPassword: "",
               password: "",
             }}
@@ -121,6 +122,17 @@ const addOrder = () => {
                   <InputErrorMessage error={errors.bankAccountNumber} />
                 )}
                 <AppTextInput
+                  iconName="bank"
+                  secureTextEntry={false}
+                  onChangeText={handleChange("bankName")}
+                  value={values.bankName}
+                  autoCapitalize="none"
+                  placeholder="Bank Name"
+                />
+                {touched.bankName && errors.bankName && (
+                  <InputErrorMessage error={errors.bankName} />
+                )}
+                <AppTextInput
                   iconName="lock"
                   password={true}
                   onChangeText={handleChange("confirmPassword")}
@@ -165,7 +177,7 @@ export default addOrder;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: PADDING.horizontalPaddingLarge,
+    paddingHorizontal: PADDING.horizontalPaddingSmall,
     backgroundColor: COLORS.white,
     flex: 1,
   },

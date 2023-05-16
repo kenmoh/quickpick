@@ -10,7 +10,7 @@ const AppButton = ({
   title,
   textColor = "primaryColor",
   width = "largeBtnWidth",
-  height = 40,
+  height = 50,
   verticalMargin = "btnVerticalMarginLarge",
   onPress = () => {},
 }) => {

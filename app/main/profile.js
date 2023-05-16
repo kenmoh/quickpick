@@ -11,7 +11,7 @@ import { useAuth } from "../../auth/context";
 
 const profile = () => {
   const router = useRouter();
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
   const handleDeleteAccount = () => {
     console.log("Account Deleted!!!");
   };
@@ -37,11 +37,21 @@ const profile = () => {
             uri: "https://mohdelivery.s3.amazonaws.com/00a54cfc66fa14eb4fa10235twitter.jpeg",
           }}
         />
-        <Text style={styles.text}>Name or Company name</Text>
-        <Text style={styles.headerText}>+2348088776655</Text>
+        {user?.user_type === "dispatcher" ? (
+          <Text style={styles.headerText}>{user?.company_name}</Text>
+        ) : (
+          <Text style={styles.headerText}>{user?.username}</Text>
+        )}
+        <Text style={styles.headerText}>{user?.phone_number}</Text>
       </View>
       <View style={styles.container}>
         <View style={styles.topContainer}>
+          {user?.user_type === "dispatcher" && (
+            <ProfileLink
+              screenName={"Add Rider"}
+              onPress={() => router.push("addRider")}
+            />
+          )}
           <ProfileLink
             screenName={"Profile"}
             onPress={() => router.push("userProfile")}
@@ -92,9 +102,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   btmContainer: {
-    alignSelf: "flex-start",
     flexDirection: "row",
-    columnGap: 50,
+    justifyContent: "space-between",
+    alignItems: "center",
     marginVertical: 15,
   },
   logout: {

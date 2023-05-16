@@ -1,7 +1,7 @@
 import { StatusBar, StyleSheet, Text, View, FlatList } from "react-native";
 import React from "react";
 
-import { useRouter, useNavigation } from "expo-router";
+import { useRouter, useNavigation, useFocusEffect } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 
 import { PADDING } from "../../constants/sizes";
@@ -19,6 +19,7 @@ import orderApi from "../../api/orders";
 const orders = () => {
   const router = useRouter();
   const { user } = useAuth();
+
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = React.useState(false);
   const {
@@ -29,8 +30,10 @@ const orders = () => {
   } = useApi(orderApi.getListings);
 
   React.useEffect(() => {
-    loadListings();
-  }, []);
+    if (navigation.isFocused()) {
+      loadListings();
+    }
+  }, [navigation.isFocused()]);
 
   return (
     <AppSafeAreaView>
@@ -46,32 +49,39 @@ const orders = () => {
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
           vertical
-          renderItem={({ item }) => (
-            <Card
-              order={item}
-              onPress={() =>
-                navigation.navigate("orderDetails", {
-                  name: item.name,
-                  vendor_username: item.vendor_username,
-                  order_photo_url: item.order_photo_url,
-                  owner_phone_number: item.owner_phone_number,
-                  origin: item.origin,
-                  location: item.location,
-                  distance: item.distance,
-                  total_cost: item.total_cost,
-                  deduction: item.deduction,
-                  amount_payable: item.amount_payable,
-                  description: item.description,
-                  order_photo_url:
-                    "https://mohdelivery.s3.amazonaws.com/8666c156c3e7e4a85d648d78twitter.jpeg",
-                  // order_photo_url: item.order_photo_url,
-                })
-              }
-            />
-          )}
+          renderItem={({ item }) =>
+            item.order_status === "Pending" &&
+            item.payment_status === "paid" && (
+              <Card
+                order={item}
+                orderId={item.id}
+                onPress={() =>
+                  navigation.navigate("orderDetails", {
+                    name: item.name,
+                    vendor_username: item.vendor_username,
+                    order_photo_url: item.order_photo_url,
+                    owner_phone_number: item.owner_phone_number,
+                    dispatch_company_name: item.dispatch_company_name,
+                    dispatch_comapany_phone_number:
+                      item.ispatch_comapany_phone_number,
+                    rider_phone_number: item.rider_phone_number,
+                    origin: item.origin,
+                    destination: item.destination,
+                    distance: item.distance,
+                    total_cost: item.total_cost,
+                    deduction: item.deduction,
+                    amount_payable: item.amount_payable,
+                    description: item.description,
+                    order_status: item.order_status,
+                    order_photo_url: item.order_photo_url,
+                    order_id: item.id,
+                  })
+                }
+              />
+            )
+          }
           refreshing={refreshing}
-          // TODO: function to call new data from backend
-          onRefresh={() => {}}
+          onRefresh={loadListings}
         />
 
         {/* Show Add button base on user(vendor) */}
@@ -91,7 +101,7 @@ export default orders;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: PADDING.horizontalPaddingSmall,
+    // paddingHorizontal: PADDING.horizontalPaddingSmall,
     backgroundColor: COLORS.white,
   },
   text: {

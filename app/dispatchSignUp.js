@@ -193,7 +193,7 @@ export default signup;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: PADDING.horizontalPaddingLarge,
+    paddingHorizontal: PADDING.verticalPaddingSmall,
     backgroundColor: COLORS.white,
     flex: 1,
   },

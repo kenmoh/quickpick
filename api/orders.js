@@ -4,16 +4,33 @@ import client from "./client";
 
 const endpoint = "/orders/";
 const getListings = () => client.get(endpoint);
-const getCustomerListings = () => client.get(`${endpoint}customer-order`);
+
+// Get Listings by logged in vendor
 const getVendorListings = () => client.get(`${endpoint}vendor-orders`);
+
+// Get Listings by logged in dispatch
+const getDispatchListings = () => client.get(`${endpoint}user-orders`);
+
+// Pickup order by dispatch/rider
 const pickUpOrder = (order_id) =>
   client.put(`${endpoint}${order_id}/pick-up-order`);
+
+// Order details
 const orderDetails = (orderId) => client.get(`${endpoint}${orderId}`);
-const confirmOrderDelivery = (order_id) =>
-  client.put(`${endpoint}${order_id}/confirm-delivery`);
+
+// Mark order as delivered [dispatch/rider users only]
 const orderDelievered = (order_id) =>
   client.put(`${endpoint}${order_id}/order-is-delivered`);
 
+// Cancel picked up order [dispatch/rider users only]
+const cancelOrder = (order_id) =>
+  client.put(`${endpoint}${order_id}/cancel-order`);
+
+// Mark order as received [vendor users only]
+const orderReceived = (order_id) =>
+  client.put(`${endpoint}${order_id}/order-received`);
+
+// create new order
 const addItem = (item) => {
   const data = new FormData();
   data.append("name", item.name);
@@ -24,19 +41,19 @@ const addItem = (item) => {
   data.append("image", {
     type: "image/jpeg",
     uri: item.orderPhotoUrl,
-    name: item.orderPhotoUrl,
+    name: item.orderPhotoUrl.split("/").slice(-1)[0],
   });
-  console.log(data.image);
   return client.post(endpoint, data);
 };
 
 export default {
   addItem,
-  confirmOrderDelivery,
+  cancelOrder,
   getListings,
-  getCustomerListings,
   getVendorListings,
+  getDispatchListings,
   pickUpOrder,
   orderDelievered,
   orderDetails,
+  orderReceived,
 };

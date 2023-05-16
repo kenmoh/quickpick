@@ -5,6 +5,7 @@ import {
   Image,
   TouchableWithoutFeedback,
   Alert,
+  Text,
 } from "react-native";
 import * as imagePicker from "expo-image-picker";
 
@@ -40,8 +41,10 @@ const AppImagePicker = ({ imageUri, onChangeImage }) => {
       <View style={styles.imageContainer}>
         {!imageUri && (
           <AntDesign name="camera" size={50} color={COLORS.darkText} />
+          // <Text style={{ color: COLORS.lightColor }}>Select Image</Text>
         )}
         {imageUri && (
+          // <Text style={{ color: COLORS.lightColor }}>{imageUri}</Text>
           <Image
             source={{ uri: imageUri }}
             style={styles.image}
@@ -57,6 +60,8 @@ export default AppImagePicker;
 
 const styles = StyleSheet.create({
   imageContainer: {
+    width: "100%",
+    height: 40,
     width: 70,
     height: 70,
     backgroundColor: COLORS.lightColor,
@@ -66,6 +71,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginTop: 15,
     overflow: "hidden",
+    borderWidth: 1,
+    borderColor: COLORS.lightColor,
   },
   image: {
     width: "100%",

@@ -9,14 +9,15 @@ export const COLORS = {
   errorText: "#E94560",
   inputBackgroundColor: "#F3F4FB",
   successColor: "teal",
-  pendingColor: "#CA955C",
+  pendingColor: "#fae1dd",
   darkText: "#6E7C7C",
-  success: "#14C38E",
+  success: "#b9fbc0",
   appBackgroundColor: "#E9EFF2",
   blackBackgroundColor: "#000",
   inActivetrackColor: "#767577",
   activeTrackColor: "#81b0ff",
   borderColor: "#ccc",
+  pickUpColor: "#f1dca7",
 };
 
 export const FONT_WEIGHT = {

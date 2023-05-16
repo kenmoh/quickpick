@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { COLORS } from "../constants/colors_font";
 
 const FloatingActionButton = ({ icon, onPress }) => {
@@ -23,5 +23,6 @@ const styles = StyleSheet.create({
     bottom: 30,
     right: 10,
     elevation: 10,
+    zIndex: 999,
   },
 });

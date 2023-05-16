@@ -9,14 +9,12 @@ import { COLORS } from "../constants/colors_font";
 const Card = ({ order, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
+      <Divider />
       <View style={styles.card}>
         <View style={styles.headerContainer}>
           <View style={styles.header}>
             <Image
-              source={{
-                uri: "https://mohdelivery.s3.amazonaws.com/ffaf75dbfa4909bfd6d7f08cpost.png",
-              }}
-              // source={{ uri: order?.order_photo_url }}
+              source={{ uri: order?.order_photo_url }}
               style={styles.imageStyle}
               resizeMode="cover"
             />
@@ -27,13 +25,13 @@ const Card = ({ order, onPress }) => {
           </View>
           <Text style={styles.date}>{order?.created_at}</Text>
         </View>
-        <Divider />
+        {/* <Divider /> */}
         <View style={styles.body}>
           <Text style={styles.title}>{order?.origin}</Text>
           <AntDesign name="swapright" size={24} color={COLORS.darkText} />
           <Text style={styles.title}>{order?.destination}</Text>
         </View>
-        <Divider />
+        {/* <Divider /> */}
         <View style={styles.footer}>
           <View style={styles.footerText}>
             <Text style={styles.title}>Distance: </Text>
@@ -74,8 +72,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 10,
     borderColor: COLORS.borderColor,
-    borderWidth: 1,
-    borderRadius: 5,
+    // borderWidth: 1,
+    // borderRadius: 5,
     marginVertical: 3.5,
   },
 

@@ -153,7 +153,7 @@ export default signin;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: PADDING.horizontalPaddingLarge,
+    paddingHorizontal: PADDING.horizontalPaddingSmall,
     backgroundColor: COLORS.white,
     flex: 1,
   },

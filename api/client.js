@@ -3,7 +3,7 @@ import { create } from "apisauce";
 import authStorage from "../auth/storage";
 
 const apiClient = create({
-  baseURL: "https://mohdelivery-development.up.railway.app/api",
+  baseURL: "https://mohdelivery.up.railway.app/api",
 });
 
 apiClient.addAsyncRequestTransform(async (request) => {

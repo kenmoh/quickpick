@@ -13,5 +13,6 @@ const styles = StyleSheet.create({
   warningText: {
     color: COLORS.errorText,
     fontSize: 12,
+    textAlign: "center",
   },
 });

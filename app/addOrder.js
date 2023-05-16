@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, ScrollView, StatusBar } from "react-native";
-import { useRouter, Link, Redirect, useNavigation } from "expo-router";
+import { StyleSheet, View, ScrollView, StatusBar } from "react-native";
+import { useNavigation } from "expo-router";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import MapView, { Marker } from "react-native-maps";
@@ -32,7 +32,6 @@ const validationSchema = Yup.object().shape({
 });
 
 const addOrder = () => {
-  const router = useRouter();
   const navigation = useNavigation();
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -164,7 +163,7 @@ export default addOrder;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: PADDING.horizontalPaddingLarge,
+    paddingHorizontal: PADDING.horizontalPaddingSmall,
     backgroundColor: COLORS.white,
     flex: 2,
   },

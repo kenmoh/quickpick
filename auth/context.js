@@ -10,9 +10,9 @@ export default AuthContext;
 export function useAuth() {
   return React.useContext(AuthContext);
 }
-// This hook can be used to access the order origin and destination.
+// This hook is used to access the order origin and destination.
 export function useOriginDestination() {
-  return React.useContext(AuthContext);
+  return React.useContext(locationContext);
 }
 
 // This hook will protect the route access based on user authentication.
@@ -28,10 +28,10 @@ function useProtectedRoute(user) {
       !user &&
       !inAuthGroup
     ) {
-      // Redirect to the sign-in page.
+      // Redirect to the sign-in screen.
       router.replace("/signin");
     } else if (user && inAuthGroup) {
-      // Redirect away from the sign-in page.
+      // Redirect away from the sign-in screen.
       router.replace("/");
     }
   }, [user, segments]);
@@ -56,7 +56,7 @@ export function AuthProvider({ children }) {
   );
 }
 export function LocationProvider({ children }) {
-  const [origin, seOrigin] = React.useState(null);
+  const [origin, setOrigin] = React.useState(null);
   const [destination, setDestination] = React.useState(null);
 
   return (
@@ -64,7 +64,7 @@ export function LocationProvider({ children }) {
       value={{
         origin,
         destination,
-        seOrigin,
+        setOrigin,
         setDestination,
       }}
     >

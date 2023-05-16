@@ -10,11 +10,13 @@ const OrderBtn = ({
   textColor = "primaryColor",
   width = "largeBtnWidth",
   height = 30,
+  disabled = false,
   onPress = () => {},
 }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={disabled}
       style={[
         styles.btnStyle,
         {
@@ -41,7 +43,6 @@ export default OrderBtn;
 const styles = StyleSheet.create({
   btnStyle: {
     width: BUTTON_SIZE.largeBtnWidth,
-    // borderRadius: BUTTON_SIZE.largeRadius,
     borderTopEndRadius: BUTTON_SIZE.mediumRadius,
     borderTopStartRadius: BUTTON_SIZE.mediumRadius,
     justifyContent: "center",

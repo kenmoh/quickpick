@@ -19,14 +19,16 @@ const paymentUrl = () => {
   return (
     <View style={styles.container}>
       {showWebView ? (
-        <WebView
-          source={{
-            uri: payment_url,
-          }}
-        />
+        <>
+          <WebView
+            source={{
+              uri: payment_url,
+            }}
+          />
+        </>
       ) : (
         <TouchableOpacity onPress={handleOpenWebView} style={styles.button}>
-          <Text style={styles.buttonText}>PAY N{total_cost}</Text>
+          <Text style={styles.buttonText}>PAY NGN{total_cost}</Text>
         </TouchableOpacity>
       )}
     </View>

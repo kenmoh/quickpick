@@ -14,14 +14,15 @@ const AppTextInput = ({
   noLabel = true,
   label,
   iconName,
-  error,
   password,
   isMultiline = false,
   style,
+  inputHeight = 50,
+  multiLineHeighy = 75,
   onFocus = () => {},
   ...props
 }) => {
-  const [isFocused, setIsFocused] = useState(false);
+  // const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
 
   return (
@@ -33,14 +34,10 @@ const AppTextInput = ({
 
           noLabel ? { marginVertical: -5 } : { marginVertical: 0 },
           isMultiline
-            ? { height: 75, alignItems: "flex-start" }
-            : { height: 40 },
+            ? { height: multiLineHeighy, alignItems: "flex-start" }
+            : { height: inputHeight },
           {
-            borderColor: error
-              ? COLORS.red
-              : isFocused
-              ? COLORS.primaryColor
-              : COLORS.lightColor,
+            // borderColor: isFocused && COLORS.primaryColor,
           },
         ]}
       >
@@ -53,9 +50,9 @@ const AppTextInput = ({
           autoCorrect={false}
           onFocus={() => {
             onFocus();
-            setIsFocused(true);
+            // setIsFocused(true);
           }}
-          onBlur={() => setIsFocused(false)}
+          // onBlur={() => setIsFocused(false)}
           {...props}
         />
         <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
@@ -67,7 +64,7 @@ const AppTextInput = ({
           )}
         </TouchableOpacity>
       </View>
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {/* {error && <Text style={styles.errorText}>{error}</Text>} */}
     </View>
   );
 };

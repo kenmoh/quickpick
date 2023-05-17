@@ -14,8 +14,6 @@ const wallet = () => {
   const [wallet, setWallet] = useState(null);
   const [transactions, setTransactions] = useState([]);
 
-  console.log(transactions);
-
   const getDispatcUserhWallet = async () => {
     const result = await walletsApi.getDispatchWallet(user.id);
     setWallet(result.data);
@@ -49,7 +47,7 @@ const wallet = () => {
         {transactions?.map((transaction) => (
           <Transaction
             key={transaction.id}
-            bgColor="#A9FBC3"
+            bgColor={COLORS.success}
             iconColor="green"
             icon="arrow-down-left"
             vendorName={transaction?.vendor_username}
@@ -58,8 +56,6 @@ const wallet = () => {
           />
         ))}
       </ScrollView>
-
-      <Transaction icon="arrow-up-right" />
     </View>
   );
 };

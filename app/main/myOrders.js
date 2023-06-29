@@ -76,8 +76,36 @@ const myOrders = () => {
                   })
                 }
               />
+            ) : item.dispatch_company_name === user?.company_name ? (
+              <Card
+                order={item}
+                orderId={item.id}
+                onPress={() =>
+                  navigation.navigate("orderDetails", {
+                    name: item.name,
+                    vendor_username: item.vendor_username,
+                    dispatch_company_name: item.dispatch_company_name,
+                    dispatch_comapany_phone_number:
+                      item.dispatch_comapany_phone_number,
+                    rider_phone_number: item.rider_phone_number,
+                    order_photo_url: item.order_photo_url,
+                    owner_phone_number: item.owner_phone_number,
+                    origin: item.origin,
+                    destination: item.destination,
+                    distance: item.distance,
+                    total_cost: item.total_cost,
+                    deduction: item.deduction,
+                    amount_payable: item.amount_payable,
+                    description: item.description,
+                    order_status: item.order_status,
+                    order_photo_url: item.order_photo_url,
+                    order_id: item.id,
+                  })
+                }
+              />
             ) : (
-              item.dispatch_company_name === user?.company_name && (
+              item.rider_phone_number === user?.phone_number &&
+              item.dispatch_company_name === user?.dispatch && (
                 <Card
                   order={item}
                   orderId={item.id}

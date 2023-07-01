@@ -155,18 +155,6 @@ const addRider = () => {
                 <AppTextInput
                   iconName="lock"
                   password={true}
-                  onChangeText={handleChange("confirmPassword")}
-                  value={values.confirmPassword}
-                  autoCapitalize="none"
-                  textContentType="password"
-                  placeholder="Confirm Password"
-                />
-                {touched.confirmPassword && errors.confirmPassword && (
-                  <InputErrorMessage error={errors.confirmPassword} />
-                )}
-                <AppTextInput
-                  iconName="lock"
-                  password={true}
                   onChangeText={handleChange("password")}
                   value={values.password}
                   autoCapitalize="none"
@@ -175,6 +163,18 @@ const addRider = () => {
                 />
                 {touched.password && errors.password && (
                   <InputErrorMessage error={errors.password} />
+                )}
+                <AppTextInput
+                  iconName="lock"
+                  password={true}
+                  onChangeText={handleChange("confirmPassword")}
+                  value={values.confirmPassword}
+                  autoCapitalize="none"
+                  textContentType="password"
+                  placeholder="Confirm Password"
+                />
+                {touched.confirmPassword && errors.confirmPassword && (
+                  <InputErrorMessage error={errors.confirmPassword} />
                 )}
 
                 <AppButton

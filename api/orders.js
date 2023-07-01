@@ -2,33 +2,33 @@ import client from "./client";
 
 // TODO Add all order related operations
 
-const endpoint = "/orders/";
+const endpoint = "/orders";
 const getListings = () => client.get(endpoint);
 
 // Get Listings by logged in vendor
-const getVendorListings = () => client.get(`${endpoint}vendor-orders`);
+const getVendorListings = () => client.get(`${endpoint}/vendor-orders`);
 
 // Get Listings by logged in dispatch
-const getDispatchListings = () => client.get(`${endpoint}user-orders`);
+const getUserListings = () => client.get(`${endpoint}/user-orders`);
 
 // Pickup order by dispatch/rider
 const pickUpOrder = (order_id) =>
-  client.put(`${endpoint}${order_id}/pick-up-order`);
+  client.put(`${endpoint}/${order_id}/pick-up-order`);
 
 // Order details
 const orderDetails = (orderId) => client.get(`${endpoint}${orderId}`);
 
 // Mark order as delivered [dispatch/rider users only]
 const orderDelievered = (order_id) =>
-  client.put(`${endpoint}${order_id}/order-is-delivered`);
+  client.put(`${endpoint}/${order_id}/order-is-delivered`);
 
 // Cancel picked up order [dispatch/rider users only]
 const cancelOrder = (order_id) =>
-  client.put(`${endpoint}${order_id}/cancel-order`);
+  client.put(`${endpoint}/${order_id}/cancel-order`);
 
 // Mark order as received [vendor users only]
 const orderReceived = (order_id) =>
-  client.put(`${endpoint}${order_id}/order-received`);
+  client.put(`${endpoint}/${order_id}/order-received`);
 
 // create new order
 const addItem = (item) => {
@@ -51,7 +51,7 @@ export default {
   cancelOrder,
   getListings,
   getVendorListings,
-  getDispatchListings,
+  getUserListings,
   pickUpOrder,
   orderDelievered,
   orderDetails,

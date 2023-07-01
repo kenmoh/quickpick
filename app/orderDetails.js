@@ -223,7 +223,7 @@ const orderDetails = () => {
           disabled={order?.order_status === "Received" ? true : false}
         />
       )}
-      {user?.user_type === `${"dispatcher" || "rider"}` &&
+      {(user?.user_type === "dispatcher" || user?.user_type === "rider") &&
         order?.order_status === "Picked up" && (
           <OrderBtn
             btnColor={"primaryColor"}
@@ -234,7 +234,7 @@ const orderDetails = () => {
           />
         )}
 
-      {user?.user_type === `${"dispatcher" || "rider"}` &&
+      {(user?.user_type === "dispatcher" || user?.user_type === "rider") &&
         order?.order_status === "Pending" && (
           <OrderBtn
             btnColor={"primaryColor"}

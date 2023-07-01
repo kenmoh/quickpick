@@ -20,12 +20,14 @@ const myOrders = () => {
   const router = useRouter();
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = React.useState(false);
+
   const {
     data: orders,
     error,
     loading,
     requestData: loadListings,
-  } = useApi(ordersApi.getDispatchListings);
+  } = useApi(ordersApi.getUserListings);
+  const myOrders = orders.orders;
 
   React.useEffect(() => {
     if (navigation.isFocused()) {
@@ -40,7 +42,7 @@ const myOrders = () => {
       <AppErrorMessage error={error} visible={error} />
       <View style={styles.container}>
         <FlatList
-          data={orders}
+          data={myOrders}
           keyExtractor={(item) => item.id.toString()}
           estimatedItemSize={200}
           showsHorizontalScrollIndicator={false}

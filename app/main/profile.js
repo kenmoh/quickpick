@@ -68,6 +68,12 @@ const profile = () => {
               }
             />
           )}
+          {user?.user_type === "dispatcher" && (
+            <ProfileLink
+              screenName={"My Riders"}
+              onPress={() => router.push("riders")}
+            />
+          )}
           <ProfileLink
             screenName={"About"}
             onPress={() => router.push("about")}
@@ -84,12 +90,12 @@ const profile = () => {
               <Text style={styles.logout}>Logout</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleDeleteAccount}>
+          {/* <TouchableOpacity onPress={handleDeleteAccount}>
             <View style={styles.deleteContainer}>
               <AntDesign name="delete" size={16} color={COLORS.errorText} />
               <Text style={styles.delete}>Dele My Accout</Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </AppSafeAreaView>

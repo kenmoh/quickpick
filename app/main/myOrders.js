@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, StatusBar, FlatList } from "react-native";
+import { useEffect, useState } from "react";
+import { StyleSheet, View, StatusBar, FlatList } from "react-native";
 import { useNavigation, useRouter } from "expo-router";
-import { AntDesign } from "@expo/vector-icons";
 
 import { GOOFLE_MAP_API_KEY } from "@env";
 
@@ -19,7 +18,7 @@ const myOrders = () => {
   const { user } = useAuth();
   const router = useRouter();
   const navigation = useNavigation();
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const {
     data: orders,
@@ -29,7 +28,7 @@ const myOrders = () => {
   } = useApi(ordersApi.getUserListings);
   const myOrders = orders.orders;
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (navigation.isFocused()) {
       loadListings();
     }
@@ -39,8 +38,8 @@ const myOrders = () => {
     <AppSafeAreaView>
       <StatusBar backgroundColor={COLORS.primaryColor} barStyle="auto" />
       <AppActivityIndicator visible={loading} height="100%" />
-      <AppErrorMessage error={error} visible={error} />
       <View style={styles.container}>
+        <AppErrorMessage error={error} visible={error} />
         <FlatList
           data={myOrders}
           keyExtractor={(item) => item.id.toString()}

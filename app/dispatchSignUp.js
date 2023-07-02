@@ -29,7 +29,7 @@ const phoneRegExp =
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().trim().required().label("Email"),
   companyName: Yup.string().required().label("Company Name"),
-  companyRegNum: Yup.string().required().label("Company Reg. Number"),
+  companyRegNum: Yup.string(),
   phoneNumber: Yup.string()
     .required()
     .matches(phoneRegExp, "Enter a valid phone number")
@@ -73,8 +73,8 @@ const signup = () => {
               companyName: "",
               companyRegNum: "",
               phoneNumber: "",
-              confirmPassword: "",
               password: "",
+              confirmPassword: "",
             }}
             validationSchema={validationSchema}
             onSubmit={signUpDispatch}

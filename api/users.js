@@ -5,6 +5,9 @@ import client from "./client";
 const dispatchEndpoint = "/users/register-dispatch";
 const riderEndpoint = "/users/register-rider";
 const userEndpoint = "/users/register";
+const user = "/users";
+
+const getDispatchRiders = () => client.get(`${user}/dispatcher-riders`);
 
 const addUser = (user) => {
   const data = new FormData();
@@ -32,9 +35,13 @@ const addRider = (rider) => {
   data.append("username", rider.username.toLowerCase().trim());
   data.append("full_name", rider.fullName.toLowerCase().trim());
   data.append("phone_number", rider.phoneNumber);
-  data.append("bank_account_number", rider.bankAccountNumber);
-  data.append("bank_name", rider.bankName);
+  data.append("plate_number", rider.plateNumber);
   data.append("password", rider.password);
+  data.append("image", {
+    type: "image/jpeg",
+    uri: rider.profilePhotoUrl,
+    name: rider.profilePhotoUrl.split("/").slice(-1)[0],
+  });
 
   return client.post(riderEndpoint, data);
 };
@@ -43,4 +50,5 @@ export default {
   addDispatch,
   addUser,
   addRider,
+  getDispatchRiders,
 };

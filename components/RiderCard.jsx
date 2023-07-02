@@ -1,50 +1,27 @@
-import { StyleSheet, Text, View, Switch, Pressable } from "react-native";
-import { useState } from "react";
+import { StyleSheet, Text, View, Image } from "react-native";
 import { COLORS } from "../constants/colors_font";
 import Divider from "./Divider";
 
-const RiderCard = ({ fullName, phoneNumber, bankNamem, accountNumber }) => {
-  const [isEnabled, setIsEnabled] = useState(false);
-
-  const handleSwitchToggle = async (value) => {
-    setIsEnabled(value);
-    console.log("The value is: ", value);
-  };
+const RiderCard = ({ fullName, imageUrl, phoneNumber, plateNumber }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.topWrapper}>
-        <View>
-          <Text
-            style={[
-              styles.text,
-              {
-                textTransform: "uppercase",
-                marginBottom: 5,
-                fontWeight: "bold",
-              },
-            ]}
-          >
-            {fullName}
-          </Text>
-          <Text style={styles.text}>{phoneNumber}</Text>
-        </View>
-        <Pressable onPress={() => handleSwitchToggle(!isEnabled)}>
-          <Switch
-            trackColor={{
-              false: COLORS.inActivetrackColor,
-              true: COLORS.activeTrackColor,
-            }}
-            thumbColor={isEnabled ? COLORS.primaryColor : "#f4f3f4"}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={handleSwitchToggle}
-            value={isEnabled}
-          />
-        </Pressable>
-      </View>
       <Divider />
+      <View style={styles.topWrapper}>
+        <View style={styles.header}>
+          <Image
+            source={{ uri: imageUrl }}
+            style={styles.imageStyle}
+            resizeMode="cover"
+          />
+          <View style={styles.text}>
+            <Text style={styles.title}>{fullName}</Text>
+            <Text style={styles.phoneNumber}>{phoneNumber} </Text>
+          </View>
+        </View>
+      </View>
       <View style={styles.btmWrapper}>
-        <Text style={styles.text}>{bankNamem}</Text>
-        <Text style={styles.text}>{accountNumber}</Text>
+        <Text style={styles.text}>Plate Number</Text>
+        <Text style={styles.text}>{plateNumber.toUpperCase()}</Text>
       </View>
     </View>
   );
@@ -53,6 +30,11 @@ const RiderCard = ({ fullName, phoneNumber, bankNamem, accountNumber }) => {
 export default RiderCard;
 
 const styles = StyleSheet.create({
+  phoneNumber: {
+    color: COLORS.darkText,
+    fontSize: 12,
+    fontWeight: "bold",
+  },
   topWrapper: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -68,12 +50,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     backgroundColor: COLORS.white,
     borderRadius: 5,
-    elevation: 1,
-    marginVertical: 2,
+    marginVertical: 5,
     width: "95%",
     alignSelf: "center",
   },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 20,
+  },
+  imageStyle: {
+    height: 50,
+    width: 50,
+    borderRadius: 10,
+  },
+
   text: {
     color: "grey",
+  },
+  title: {
+    color: COLORS.headerText,
   },
 });

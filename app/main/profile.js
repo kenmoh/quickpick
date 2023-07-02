@@ -71,7 +71,7 @@ const profile = () => {
           {user?.user_type === "dispatcher" && (
             <ProfileLink
               screenName={"My Riders"}
-              onPress={() => router.push("riders")}
+              onPress={() => router.push("listRiderScreen")}
             />
           )}
           <ProfileLink

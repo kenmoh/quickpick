@@ -5,6 +5,7 @@ import { useNavigation } from "expo-router";
 
 import Divider from "./Divider";
 import { COLORS } from "../constants/colors_font";
+import Status from "./Status";
 
 const Card = ({ order, onPress }) => {
   return (
@@ -33,9 +34,39 @@ const Card = ({ order, onPress }) => {
         </View>
         {/* <Divider /> */}
         <View style={styles.footer}>
-          <View style={styles.footerText}>
-            <Text style={styles.title}>Distance: </Text>
-            <Text style={styles.distance}>{order?.distance} km</Text>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <View style={styles.footerText}>
+              <Text style={styles.title}>Distance: </Text>
+              <Text style={styles.distance}>{order?.distance} km</Text>
+            </View>
+          </View>
+          <View style={{}}>
+            <Status
+              pillWidth="100%"
+              pVertical={2}
+              pHorizontal={10}
+              text={order?.order_status}
+              backgroundColor={`${
+                order?.order_status === "Received"
+                  ? "success"
+                  : order?.order_status === "Picked up"
+                  ? "pickUpColor"
+                  : order?.order_status === "Delivered"
+                  ? "activeTrackColor"
+                  : "pendingColor"
+              }`}
+              textColor={`${
+                order?.order_status === "Pending"
+                  ? "#c8553d"
+                  : order?.order_status === "Received"
+                  ? "#25a18e"
+                  : order?.order_status === "Delivered"
+                  ? "#27187e"
+                  : "#e8ac65"
+              }`}
+            />
           </View>
         </View>
       </View>
@@ -72,8 +103,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 10,
     borderColor: COLORS.borderColor,
-    // borderWidth: 1,
-    // borderRadius: 5,
     marginVertical: 3.5,
   },
 

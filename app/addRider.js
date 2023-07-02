@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { useRouter } from "expo-router";
 
@@ -17,6 +11,7 @@ import {
   AppErrorMessage,
   AppSafeAreaView,
   AppTextInput,
+  ImagePickerForm,
   InputErrorMessage,
 } from "../components";
 import { PADDING } from "../constants/sizes";
@@ -36,13 +31,13 @@ const validationSchema = Yup.object().shape({
     .max(16)
     .min(7)
     .label("Phone Number"),
-  bankAccountNumber: Yup.string().required().label("Bank Account Number"),
-  bankName: Yup.string().required().label("Bank Name"),
+  plateNumber: Yup.string().required().label("Plate Number"),
   password: Yup.string().required().label("Password"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .required()
     .label("Confirm Password"),
+  profilePhotoUrl: Yup.string().required().label("Image"),
 });
 
 const addRider = () => {
@@ -68,22 +63,24 @@ const addRider = () => {
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={styles.titleText}>Add Rider</Text>
+
           <Formik
             initialValues={{
               fullName: "",
               username: "",
               email: "",
               phoneNumber: "",
-              bankAccountNumber: "",
-              bankName: "",
-              confirmPassword: "",
+              plateNumber: "",
+              profilePhotoUrl: "",
               password: "",
+              confirmPassword: "",
             }}
             validationSchema={validationSchema}
             onSubmit={handleAddRider}
           >
             {({ handleChange, handleSubmit, values, errors, touched }) => (
               <>
+                <ImagePickerForm field={"profilePhotoUrl"} />
                 <AppTextInput
                   iconName="user"
                   secureTextEntry={false}
@@ -130,27 +127,16 @@ const addRider = () => {
                 {touched.phoneNumber && errors.phoneNumber && (
                   <InputErrorMessage error={errors.phoneNumber} />
                 )}
+
                 <AppTextInput
-                  iconName="bank"
                   secureTextEntry={false}
-                  onChangeText={handleChange("bankAccountNumber")}
-                  value={values.bankAccountNumber}
+                  onChangeText={handleChange("plateNumber")}
+                  value={values.plateNumber}
                   autoCapitalize="none"
-                  placeholder="Bank Account Number"
+                  placeholder="Plate Number"
                 />
-                {touched.bankAccountNumber && errors.bankAccountNumber && (
-                  <InputErrorMessage error={errors.bankAccountNumber} />
-                )}
-                <AppTextInput
-                  iconName="bank"
-                  secureTextEntry={false}
-                  onChangeText={handleChange("bankName")}
-                  value={values.bankName}
-                  autoCapitalize="none"
-                  placeholder="Bank Name"
-                />
-                {touched.bankName && errors.bankName && (
-                  <InputErrorMessage error={errors.bankName} />
+                {touched.plateNumber && errors.plateNumber && (
+                  <InputErrorMessage error={errors.plateNumber} />
                 )}
                 <AppTextInput
                   iconName="lock"

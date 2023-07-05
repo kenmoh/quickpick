@@ -14,6 +14,7 @@ import {
 } from "react-native-image-header-scroll-view";
 
 import { useSearchParams, useNavigation } from "expo-router";
+import { showMessage } from "react-native-flash-message";
 
 import {
   AppActivityIndicator,
@@ -44,9 +45,18 @@ const orderDetails = () => {
     const result = await ordersApi.pickUpOrder(orderId);
     setIsLoading(false);
     navigation.goBack();
-
+    if (result.ok) {
+      showMessage({
+        message: "Order picked up successfully!",
+        type: "success",
+      });
+      return;
+    }
     if (!result.ok) {
-      if (result.data) setError(result.problem);
+      showMessage({
+        message: result.data.detail,
+        type: "danger",
+      });
       return;
     }
   };
@@ -55,9 +65,18 @@ const orderDetails = () => {
     const result = await ordersApi.orderDelievered(orderId);
     setIsLoading(false);
     navigation.goBack();
-
+    if (result.ok) {
+      showMessage({
+        message: "Order delivered successfully!",
+        type: "success",
+      });
+      return;
+    }
     if (!result.ok) {
-      if (result.data) setError(result.problem);
+      showMessage({
+        message: result.data.detail,
+        type: "danger",
+      });
       return;
     }
   };
@@ -66,9 +85,18 @@ const orderDetails = () => {
     const result = await ordersApi.orderReceived(orderId);
     setIsLoading(false);
     navigation.goBack();
-
+    if (result.ok) {
+      showMessage({
+        message: "Order delivered successfully!",
+        type: "success",
+      });
+      return;
+    }
     if (!result.ok) {
-      if (result.data) setError(result.data.detail);
+      showMessage({
+        message: result.data.detail,
+        type: "danger",
+      });
       return;
     }
   };
@@ -197,8 +225,10 @@ const orderDetails = () => {
       </View>
       <AppActivityIndicator visible={isLoading} height="100%" />
 
-      <AppErrorMessage error={error} visible={error} />
-      {order?.payment_status === "pending" && (
+      {/* <AppErrorMessage error={error} visible={error} /> */}
+      {(order?.payment_status === "pending" ||
+        order?.payment_status === "cancelled" ||
+        order?.payment_status === "failed") && (
         <TouchableOpacity
           onPress={() =>
             navigation.navigate("paymentUrl", {

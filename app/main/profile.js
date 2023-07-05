@@ -40,9 +40,11 @@ const profile = () => {
           }}
         />
         {user?.user_type === "dispatcher" ? (
-          <Text style={styles.headerText}>{user?.company_name}</Text>
+          <Text style={styles.headerText}>
+            {user?.company_name.toUpperCase()}
+          </Text>
         ) : (
-          <Text style={styles.headerText}>{user?.username}</Text>
+          <Text style={styles.headerText}>{user?.username.toUpperCase()}</Text>
         )}
         <Text style={styles.headerText}>{user?.phone_number}</Text>
       </View>
@@ -56,7 +58,17 @@ const profile = () => {
           )}
           <ProfileLink
             screenName={"Profile"}
-            onPress={() => router.push("userProfile")}
+            onPress={() =>
+              router.push(
+                `${
+                  user?.user_type === "dispatch"
+                    ? "userProfile"
+                    : user?.user_type === "vendor"
+                    ? "vendorProfile"
+                    : "addRider"
+                }`
+              )
+            }
           />
           {user?.user_type === "dispatcher" && (
             <ProfileLink
@@ -74,6 +86,10 @@ const profile = () => {
               onPress={() => router.push("listRiderScreen")}
             />
           )}
+          <ProfileLink
+            screenName={"Change Password"}
+            onPress={() => router.push("changePassword")}
+          />
           <ProfileLink
             screenName={"About"}
             onPress={() => router.push("about")}

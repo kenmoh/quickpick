@@ -33,8 +33,8 @@ const validationSchema = Yup.object().shape({
   phoneNumber: Yup.string()
     .required()
     .matches(phoneRegExp, "Enter a valid phone number")
-    .max(16)
-    .min(7)
+    .max(11)
+    .min(10)
     .label("Phone Number"),
   password: Yup.string().required().label("Password"),
   confirmPassword: Yup.string()
@@ -92,6 +92,7 @@ const signup = () => {
                   autoCapitalize="none"
                   placeholder="Email"
                   keyboardType="email-address"
+                  marginBtm={-5}
                 />
                 {touched.email && errors.email && (
                   <InputErrorMessage error={errors.email} />
@@ -103,6 +104,7 @@ const signup = () => {
                   value={values.username}
                   autoCapitalize="none"
                   placeholder="Username"
+                  marginBtm={-5}
                 />
                 {touched.username && errors.username && (
                   <InputErrorMessage error={errors.username} />
@@ -115,6 +117,7 @@ const signup = () => {
                   autoCapitalize="none"
                   placeholder="0809988776655"
                   keyboardType="phone-pad"
+                  marginBtm={-5}
                 />
                 {touched.phoneNumber && errors.phoneNumber && (
                   <InputErrorMessage error={errors.phoneNumber} />
@@ -127,6 +130,7 @@ const signup = () => {
                   autoCapitalize="none"
                   textContentType="password"
                   placeholder="Password"
+                  marginBtm={-5}
                 />
                 {touched.password && errors.password && (
                   <InputErrorMessage error={errors.password} />
@@ -139,6 +143,7 @@ const signup = () => {
                   autoCapitalize="none"
                   textContentType="password"
                   placeholder="Confirm Password"
+                  marginBtm={-5}
                 />
                 {touched.confirmPassword && errors.confirmPassword && (
                   <InputErrorMessage error={errors.confirmPassword} />
@@ -150,6 +155,7 @@ const signup = () => {
                   textColor="white"
                   onPress={handleSubmit}
                   borderRadius={"smallRadius"}
+                  marginBtm={-5}
                 />
                 <AppButton
                   btnColor="blackBackgroundColor"
@@ -161,7 +167,7 @@ const signup = () => {
 
                 <View style={styles.textContainer}>
                   <View style={styles.linkContainer}>
-                    <Text style={{ color: "gray" }}>
+                    <Text style={{ color: "gray", marginBottom: 30 }}>
                       Already have an account?{" "}
                     </Text>
                     <TouchableOpacity

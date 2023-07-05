@@ -42,6 +42,11 @@ const Card = ({ order, onPress }) => {
               <Text style={styles.distance}>{order?.distance} km</Text>
             </View>
           </View>
+          {order?.payment_status != "paid" && (
+            <Text style={{ color: COLORS.lightColor, fontSize: 12 }}>
+              Pending Payment
+            </Text>
+          )}
           <View style={{}}>
             <Status
               pillWidth="100%"

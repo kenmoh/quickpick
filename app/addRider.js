@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import React, { useState } from "react";
-import { useRouter } from "expo-router";
+import { useNavigation } from "expo-router";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { showMessage } from "react-native-flash-message";
 
 import {
   AppActivityIndicator,
@@ -41,25 +42,38 @@ const validationSchema = Yup.object().shape({
 });
 
 const addRider = () => {
-  const router = useRouter();
-  const [error, setError] = useState(false);
+  const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const handleAddRider = async (rider, { resetForm }) => {
     setIsLoading(true);
     const result = await usersApi.addRider(rider);
     setIsLoading(false);
-
-    if (!result.ok) {
-      if (result.data) setError("Something went wrong");
+    navigation.goBack();
+    if (result.ok) {
+      showMessage({
+        message: "Rider created successfully!",
+        type: "success",
+      });
       return;
     }
+    if (!result.ok) {
+      showMessage({
+        message: result.data.detail,
+        type: "danger",
+        style: {
+          alignItems: "center",
+        },
+      });
+      return;
+    }
+
     resetForm();
   };
 
   return (
     <AppSafeAreaView>
       <AppActivityIndicator visible={isLoading} height="100%" />
-      <AppErrorMessage error={error} visible={error} />
+      {/* <AppErrorMessage error={error} visible={error} /> */}
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={styles.titleText}>Add Rider</Text>

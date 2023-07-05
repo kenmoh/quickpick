@@ -6,8 +6,25 @@ const dispatchEndpoint = "/users/register-dispatch";
 const riderEndpoint = "/users/register-rider";
 const userEndpoint = "/users/register";
 const user = "/users";
+const passwordResetEndPoint = "/password/recover";
+const changePasswordEndPoint = "/password/change-password";
 
 const getDispatchRiders = () => client.get(`${user}/dispatcher-riders`);
+
+const sendPasswordResetLink = (user_email) => {
+  const data = new FormData();
+  data.append("email", user_email.email.toLowerCase().trim());
+
+  return client.post(passwordResetEndPoint, data);
+};
+
+const changePassword = (user_data) => {
+  const data = new FormData();
+  data.append("old_password", user_data.oldPassword);
+  data.append("new_password", user_data.newPassword);
+
+  return client.put(changePasswordEndPoint, data);
+};
 
 const addUser = (user) => {
   const data = new FormData();
@@ -28,6 +45,38 @@ const addDispatch = (dispatch) => {
   data.append("password", dispatch.password);
 
   return client.post(dispatchEndpoint, data);
+};
+
+const updateDispatch = (dispatch, companyName) => {
+  const data = new FormData();
+
+  data.append("location", dispatch.location);
+  data.append("plate_number", dispatch.plateNumber);
+  data.append("company_reg_number", dispatch.companyRegNum);
+  data.append("bank_name", dispatch.bankName);
+  data.append("bank_account_number", dispatch.accountNumber);
+  data.append("account_holder_name", dispatch.accountHolderName);
+  data.append("image", {
+    type: "image/jpeg",
+    uri: dispatch.profilePhotoUrl,
+    name: dispatch.profilePhotoUrl.split("/").slice(-1)[0],
+  });
+
+  return client.patch(`${user}/dispatchers/${companyName}`, data);
+};
+const updateVendor = (vendor, username) => {
+  const data = new FormData();
+
+  data.append("location", vendor.location);
+  data.append("first_name", vendor.firstName);
+  data.append("last_name", vendor.lastName);
+  data.append("image", {
+    type: "image/jpeg",
+    uri: vendor.profilePhotoUrl,
+    name: vendor.profilePhotoUrl.split("/").slice(-1)[0],
+  });
+
+  return client.patch(`${user}/${username}`, data);
 };
 const addRider = (rider) => {
   const data = new FormData();
@@ -51,4 +100,8 @@ export default {
   addUser,
   addRider,
   getDispatchRiders,
+  updateDispatch,
+  sendPasswordResetLink,
+  changePassword,
+  updateVendor,
 };

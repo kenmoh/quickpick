@@ -15,10 +15,14 @@ const AppTextInput = ({
   label,
   iconName,
   password,
+  marginBtm = 1,
   isMultiline = false,
   style,
   inputHeight = 50,
   multiLineHeighy = 75,
+  paddingHorizontal = 10,
+  containerBg = COLORS.inputBackgroundColor,
+  isEditable = false,
   onFocus = () => {},
   ...props
 }) => {
@@ -32,13 +36,15 @@ const AppTextInput = ({
         style={[
           styles.inputContainer,
 
-          noLabel ? { marginVertical: -5 } : { marginVertical: 0 },
+          noLabel ? { marginVertical: marginBtm } : { marginVertical: 0 },
           isMultiline
             ? { height: multiLineHeighy, alignItems: "flex-start" }
             : { height: inputHeight },
           {
-            // borderColor: isFocused && COLORS.primaryColor,
+            paddingHorizontal,
           },
+          isEditable ? { backgroundColor: containerBg } : "#767577",
+          // { marginBottom: marginBtm },
         ]}
       >
         <AntDesign name={iconName} style={styles.icon} />
@@ -74,7 +80,6 @@ export default AppTextInput;
 const styles = StyleSheet.create({
   errorText: {
     color: COLORS.errorText,
-    // marginVertical: 0,
   },
   input: {
     marginBottom: 3,
@@ -82,6 +87,8 @@ const styles = StyleSheet.create({
   labelText: {
     fontSize: 14,
     color: COLORS.inputLabelText,
+    marginTop: 12,
+    marginBottom: 7,
   },
   icon: {
     fontSize: 20,
@@ -90,16 +97,14 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: "100%",
-    backgroundColor: COLORS.inputBackgroundColor,
     flexDirection: "row",
-    paddingHorizontal: 10,
     borderWidth: 0.5,
     borderColor: COLORS.inputLabelText,
     borderRadius: 3,
     alignItems: "center",
   },
   textInput: {
-    color: COLORS.inputLabelText,
+    color: COLORS.darkText,
     flex: 1,
     fontSize: 15,
   },

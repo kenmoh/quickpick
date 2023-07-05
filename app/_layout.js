@@ -1,6 +1,7 @@
 import { Stack } from "expo-router";
 import { COLORS } from "../constants/colors_font";
 import { AuthProvider, LocationProvider } from "../auth/context";
+import FlashMessage from "react-native-flash-message";
 
 export default () => (
   <>
@@ -35,12 +36,6 @@ export default () => (
           />
           <Stack.Screen
             name="index"
-            options={{
-              title: "",
-            }}
-          />
-          <Stack.Screen
-            name="dispatchSignUp"
             options={{
               title: "",
             }}
@@ -104,8 +99,21 @@ export default () => (
               title: "My Rider(s)",
             }}
           />
+          <Stack.Screen
+            name="userProfile"
+            options={{
+              title: "Profile",
+            }}
+          />
+          <Stack.Screen
+            name="vendorProfile"
+            options={{
+              title: "Profile",
+            }}
+          />
         </Stack>
       </LocationProvider>
     </AuthProvider>
+    <FlashMessage position="bottom" duration={2000} />
   </>
 );

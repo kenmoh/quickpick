@@ -26,6 +26,7 @@ import { useAuth } from "../../auth/context";
 import authStorage from "../../auth/storage";
 import authApi from "../../api/auth";
 import jwtDecode from "jwt-decode";
+import { showMessage } from "react-native-flash-message";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().email().trim().required().label("Email"),
@@ -34,8 +35,6 @@ const validationSchema = Yup.object().shape({
 const signin = () => {
   const router = useRouter();
   const authContext = useAuth();
-
-  const [loginFailed, setLoginFailed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async ({ username, password }) => {
@@ -44,12 +43,25 @@ const signin = () => {
 
     setIsLoading(false);
 
-    if (!result.ok) return setLoginFailed(true);
-    setLoginFailed(false);
+    if (!result.ok) {
+      showMessage({
+        message: result.data.detail,
+        type: "danger",
+      });
+      return;
+    }
 
     const user = jwtDecode(result.data.access_token);
     authContext.setUser(user);
     authStorage.storeToken(result.data.access_token);
+
+    if (result.ok) {
+      showMessage({
+        message: "Login successfully!",
+        type: "success",
+      });
+      return;
+    }
   };
   return (
     <AppSafeAreaView>
@@ -67,30 +79,34 @@ const signin = () => {
             {({ handleChange, handleSubmit, values, errors, touched }) => (
               <>
                 <AppActivityIndicator visible={isLoading} />
-                <AppErrorMessage
+                {/* <AppErrorMessage
                   error="Invalid email and/or password!"
                   visible={loginFailed}
-                />
+                /> */}
                 <AppTextInput
                   iconName="mail"
+                  label="Email"
                   secureTextEntry={false}
                   onChangeText={handleChange("username")}
                   value={values.username}
                   autoCapitalize="none"
                   placeholder="Email"
                   keyboardType="email-address"
+                  marginBtm={1}
                 />
                 {touched.username && errors.username && (
                   <InputErrorMessage error={errors.username} />
                 )}
                 <AppTextInput
                   iconName="lock"
+                  label="Password"
                   password={true}
                   onChangeText={handleChange("password")}
                   value={values.password}
                   autoCapitalize="none"
                   textContentType="password"
                   placeholder="Password"
+                  marginBtm={1}
                 />
                 {touched.password && errors.password && (
                   <InputErrorMessage error={errors.password} />
@@ -99,7 +115,7 @@ const signin = () => {
                   <Text
                     style={{
                       color: COLORS.primaryColor,
-                      marginTop: 5,
+                      marginTop: 20,
                       alignSelf: "flex-end",
                     }}
                   >

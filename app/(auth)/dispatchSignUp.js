@@ -29,12 +29,12 @@ const phoneRegExp =
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().trim().required().label("Email"),
   companyName: Yup.string().required().label("Company Name"),
-  companyRegNum: Yup.string().required().label("Company Reg. Number"),
+  companyRegNum: Yup.string(),
   phoneNumber: Yup.string()
     .required()
     .matches(phoneRegExp, "Enter a valid phone number")
-    .max(16)
-    .min(7)
+    .max(11)
+    .min(10)
     .label("Phone Number"),
   password: Yup.string().required().label("Password"),
   confirmPassword: Yup.string()
@@ -51,9 +51,6 @@ const signup = () => {
     // setIsLoading(true);
 
     const result = await usersApi.addDispatch(dispatch);
-    console.log(result);
-    console.log(result.data);
-    console.log(result);
     // setIsLoading(false);
     if (!result.ok) {
       if (result.data) setFieldExist(result.data.detail);
@@ -94,6 +91,7 @@ const signup = () => {
                   autoCapitalize="none"
                   placeholder="Email"
                   keyboardType="email-address"
+                  marginBtm={-5}
                 />
                 {touched.email && errors.email && (
                   <InputErrorMessage error={errors.email} />
@@ -104,6 +102,7 @@ const signup = () => {
                   value={values.companyName}
                   autoCapitalize="none"
                   placeholder="Company Name"
+                  marginBtm={-5}
                 />
                 {touched.companyName && errors.companyName && (
                   <InputErrorMessage error={errors.companyName} />
@@ -114,10 +113,11 @@ const signup = () => {
                   value={values.companyRegNum}
                   autoCapitalize="none"
                   placeholder="Company Reg. Number"
+                  marginBtm={-5}
                 />
-                {touched.companyRegNum && errors.companyRegNum && (
+                {/* {touched.companyRegNum && errors.companyRegNum && (
                   <InputErrorMessage error={errors.companyRegNum} />
-                )}
+                )} */}
                 <AppTextInput
                   iconName="phone"
                   secureTextEntry={false}
@@ -126,6 +126,7 @@ const signup = () => {
                   autoCapitalize="none"
                   placeholder="Phone Number"
                   keyboardType="phone-pad"
+                  marginBtm={-5}
                 />
                 {touched.phoneNumber && errors.phoneNumber && (
                   <InputErrorMessage error={errors.phoneNumber} />
@@ -139,6 +140,7 @@ const signup = () => {
                   autoCapitalize="none"
                   textContentType="password"
                   placeholder="Password"
+                  marginBtm={-5}
                 />
                 {touched.password && errors.password && (
                   <InputErrorMessage error={errors.password} />
@@ -151,6 +153,7 @@ const signup = () => {
                   autoCapitalize="none"
                   textContentType="password"
                   placeholder="Confirm Password"
+                  marginBtm={-5}
                 />
                 {touched.confirmPassword && errors.confirmPassword && (
                   <InputErrorMessage error={errors.confirmPassword} />
@@ -172,7 +175,7 @@ const signup = () => {
                 />
                 <View style={styles.textContainer}>
                   <View style={styles.linkContainer}>
-                    <Text style={{ color: "gray" }}>
+                    <Text style={{ color: "gray", marginBottom: 30 }}>
                       Already have an account?{" "}
                     </Text>
                     <TouchableOpacity

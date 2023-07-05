@@ -18,6 +18,7 @@ import { COLORS } from "../constants/colors_font";
 import { GOOFLE_MAP_API_KEY } from "@env";
 import ordersApi from "../api/orders";
 import { useState } from "react";
+import { showMessage } from "react-native-flash-message";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -40,21 +41,30 @@ const addOrder = () => {
     setIsLoading(true);
     const result = await ordersApi.addItem(item);
     setIsLoading(false);
-
-    if (!result.ok) {
-      if (result.data) setError("Something went wrong");
-      return;
-    }
     navigation.navigate("paymentUrl", {
       payment_url: result.data.payment_url,
       total_cost: result.data.total_cost,
     });
     resetForm();
+    if (result.ok) {
+      showMessage({
+        message: "Order created! Please pay to list your order for pickup",
+        type: "success",
+      });
+      return;
+    }
+    if (!result.ok) {
+      showMessage({
+        message: result.data.detail,
+        type: "danger",
+      });
+      return;
+    }
   };
   return (
     <AppSafeAreaView>
       <AppActivityIndicator visible={isLoading} height="100%" />
-      <AppErrorMessage error={error} visible={error} />
+
       <StatusBar backgroundColor="#66000000" barStyle="dark-content" />
       <View style={styles.map}>
         <MapView
@@ -89,49 +99,58 @@ const addOrder = () => {
                   <ImagePickerForm field={"orderPhotoUrl"} />
 
                   <AppTextInput
+                    label="Order Name"
                     secureTextEntry={false}
                     onChangeText={handleChange("name")}
                     value={values.name}
                     autoCapitalize="words"
                     placeholder="Order Name"
+                    marginBtm={1}
                   />
                   {touched.name && errors.name && (
                     <InputErrorMessage error={errors.name} />
                   )}
                   <AppTextInput
+                    label="Origin"
                     secureTextEntry={false}
                     onChangeText={handleChange("origin")}
                     value={values.origin}
                     autoCapitalize="words"
                     placeholder="Origin"
                     // editable={false}
+                    marginBtm={1}
                   />
                   {touched.origin && errors.origin && (
                     <InputErrorMessage error={errors.origin} />
                   )}
                   <AppTextInput
+                    label="Destination"
                     secureTextEntry={false}
                     onChangeText={handleChange("destination")}
                     value={values.destination}
                     autoCapitalize="words"
                     placeholder="Destination"
                     // editable={false}
+                    marginBtm={1}
                   />
                   {touched.destination && errors.destination && (
                     <InputErrorMessage error={errors.destination} />
                   )}
                   <AppTextInput
+                    label="Distance"
                     secureTextEntry={false}
                     onChangeText={handleChange("distance")}
                     value={values.distance}
                     autoCapitalize="none"
                     placeholder="Distance"
+                    marginBtm={1}
                     // editable={false}
                   />
                   {touched.distance && errors.distance && (
                     <InputErrorMessage error={errors.distance} />
                   )}
                   <AppTextInput
+                    label="Description"
                     secureTextEntry={false}
                     onChangeText={handleChange("description")}
                     value={values.description}

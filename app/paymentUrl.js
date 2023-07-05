@@ -1,20 +1,41 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
-import { useSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "expo-router";
 
 import { WebView } from "react-native-webview";
 import { BUTTON_SIZE } from "../constants/sizes";
 import { COLORS } from "../constants/colors_font";
+import { showMessage } from "react-native-flash-message";
 
 const paymentUrl = () => {
-  const [showWebView, setShowWebView] = React.useState(false);
+  const [showWebView, setShowWebView] = useState(false);
+  const [redirectedUrl, setRedirectedUrl] = useState(null);
   const params = useSearchParams();
+  const router = useRouter();
 
   const { payment_url, total_cost } = params;
+  const status = redirectedUrl?.url?.split("?")[1]?.split("&");
 
   const handleOpenWebView = () => {
     setShowWebView(true);
   };
+
+  useEffect(() => {
+    if (status?.[0] === "status=successful") {
+      router.push("addOrder");
+      showMessage({
+        message: "Payment Successful!",
+        type: "success",
+      });
+    }
+    if (status?.[0] === "status=failed" || status?.[0] === "status=cancelled") {
+      router.push("addOrder");
+      showMessage({
+        message: "Payment failed to complete!",
+        type: "danger",
+      });
+    }
+  }, [status]);
 
   return (
     <View style={styles.container}>
@@ -23,6 +44,9 @@ const paymentUrl = () => {
           <WebView
             source={{
               uri: payment_url,
+            }}
+            onNavigationStateChange={(navState) => {
+              setRedirectedUrl(navState);
             }}
           />
         </>

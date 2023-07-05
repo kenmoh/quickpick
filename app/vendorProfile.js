@@ -17,25 +17,22 @@ import usersApi from "../api/users";
 import { useNavigation } from "expo-router";
 
 const validationSchema = Yup.object().shape({
-  accountHolderName: Yup.string().required().label("Full Name"),
-  companyRegNum: Yup.string().required().label("Company Reg. Number"),
-  plateNumber: Yup.string().required().label("Plate Number"),
+  firstName: Yup.string().required().label("First Name"),
+  lastName: Yup.string().required().label("Last Name"),
   location: Yup.string().required().label("Location"),
-  accountNumber: Yup.string().required().label("Account Number"),
-  bankName: Yup.string().required().label("Bank Name"),
   profilePhotoUrl: Yup.string().required().label("Image"),
 });
 
-const userProfile = () => {
+const vendorProfile = () => {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
 
-  const companyName = user?.company_name;
+  const username = user?.username;
 
-  const handleUpdate = async (dispatch) => {
+  const handleUpdate = async (vendor) => {
     setIsLoading(true);
-    const result = await usersApi.updateDispatch(dispatch, companyName);
+    const result = await usersApi.updateVendor(vendor, username);
     setIsLoading(false);
     navigation.goBack();
     if (result.ok) {
@@ -61,13 +58,10 @@ const userProfile = () => {
       <View style={styles.container}>
         <Formik
           initialValues={{
-            accountHolderName: user ? user?.account_holder_name : "",
-            companyRegNum: user ? user?.company_reg_number : "",
-            plateNumber: user ? user?.plate_number : "",
-            location: user ? user?.location : "",
-            accountNumber: user ? user?.bank_account_number : "",
-            bankName: user ? user?.bank_name : "",
-            profilePhotoUrl: user ? user?.photo_url : "",
+            firstName: user?.first_name || "",
+            lastName: user?.last_name || "",
+            location: user?.location || "",
+            profilePhotoUrl: user?.photo_url || "",
           }}
           validationSchema={validationSchema}
           onSubmit={handleUpdate}
@@ -75,23 +69,7 @@ const userProfile = () => {
           {({ handleChange, handleSubmit, values, errors, touched }) => (
             <>
               <ImagePickerForm field={"profilePhotoUrl"} />
-              <AppTextInput
-                name="accountHolderName"
-                secureTextEntry={false}
-                onChangeText={handleChange("accountHolderName")}
-                value={
-                  values.accountHolderName ||
-                  user?.account_holder_name?.toUpperCase()
-                }
-                autoCapitalize="none"
-                placeholder="Account Holder Name "
-                label="Full Name"
-                inputHeight={40}
-                paddingHorizontal={1}
-              />
-              {touched.accountHolderName && errors.accountHolderName && (
-                <InputErrorMessage error={errors.accountHolderName} />
-              )}
+
               <AppTextInput
                 name="email"
                 secureTextEntry={false}
@@ -107,32 +85,46 @@ const userProfile = () => {
               />
 
               <AppTextInput
-                name="companyName"
+                name="username"
                 secureTextEntry={false}
-                onChangeText={handleChange("companyName")}
-                value={values.companyName || user?.company_name?.toUpperCase()}
+                onChangeText={handleChange("username")}
+                value={values.username || user?.username?.toUpperCase()}
                 autoCapitalize="none"
-                placeholder="Company Name"
+                placeholder="Username"
                 editable={false}
-                label="Company Name"
+                label="Username"
                 inputHeight={40}
                 paddingHorizontal={1}
                 isEditable
               />
 
               <AppTextInput
-                name="companyRegNum"
+                name="firstName"
                 secureTextEntry={false}
-                onChangeText={handleChange("companyRegNum")}
-                value={values.companyRegNum || user?.company_reg_number}
+                onChangeText={handleChange("firstName")}
+                value={values.firstName || user?.first_name}
                 autoCapitalize="none"
-                placeholder="Company Reg. Number"
-                label="Company Reg. Number"
+                placeholder="First Name"
+                label="First Name"
                 inputHeight={40}
                 paddingHorizontal={1}
               />
-              {touched.companyRegNum && errors.companyRegNum && (
-                <InputErrorMessage error={errors.companyRegNum} />
+              {touched.firstName && errors.firstName && (
+                <InputErrorMessage error={errors.firstName} />
+              )}
+              <AppTextInput
+                name="lastName"
+                secureTextEntry={false}
+                onChangeText={handleChange("lastName")}
+                value={values.lastName || user?.last_name}
+                autoCapitalize="none"
+                placeholder="Last Name"
+                label="Last Name"
+                inputHeight={40}
+                paddingHorizontal={1}
+              />
+              {touched.lastName && errors.lastName && (
+                <InputErrorMessage error={errors.lastName} />
               )}
               <AppTextInput
                 name="phoneNumber"
@@ -149,20 +141,6 @@ const userProfile = () => {
               />
 
               <AppTextInput
-                name="plateNumber"
-                secureTextEntry={false}
-                onChangeText={handleChange("plateNumber")}
-                value={values.plateNumber || user?.plate_number}
-                autoCapitalize="none"
-                placeholder="Plate Number"
-                label="Plate Number"
-                inputHeight={40}
-                paddingHorizontal={1}
-              />
-              {touched.plateNumber && errors.plateNumber && (
-                <InputErrorMessage error={errors.plateNumber} />
-              )}
-              <AppTextInput
                 name="location"
                 secureTextEntry={false}
                 onChangeText={handleChange("location")}
@@ -175,35 +153,6 @@ const userProfile = () => {
               />
               {touched.location && errors.location && (
                 <InputErrorMessage error={errors.location} />
-              )}
-
-              <AppTextInput
-                name="bankName"
-                secureTextEntry={false}
-                onChangeText={handleChange("bankName")}
-                value={values.bankName || user?.bank_name}
-                autoCapitalize="none"
-                placeholder="Bank Name"
-                label="Bank Name"
-                inputHeight={40}
-                paddingHorizontal={1}
-              />
-              {touched.bankName && errors.bankName && (
-                <InputErrorMessage error={errors.bankName} />
-              )}
-              <AppTextInput
-                name="accountNumber"
-                secureTextEntry={false}
-                onChangeText={handleChange("accountNumber")}
-                value={values.accountNumber || user?.bank_account_number}
-                autoCapitalize="none"
-                placeholder="Account Number"
-                label="Account Number"
-                inputHeight={40}
-                paddingHorizontal={1}
-              />
-              {touched.accountNumber && errors.accountNumber && (
-                <InputErrorMessage error={errors.accountNumber} />
               )}
 
               <AppButton
@@ -221,7 +170,7 @@ const userProfile = () => {
   );
 };
 
-export default userProfile;
+export default vendorProfile;
 
 const styles = StyleSheet.create({
   container: {

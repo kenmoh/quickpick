@@ -21,7 +21,7 @@ const orders = () => {
   const { user } = useAuth();
 
   const navigation = useNavigation();
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing] = React.useState(false);
   const {
     data: orders,
     error,

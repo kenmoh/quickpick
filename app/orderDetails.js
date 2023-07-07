@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  Alert,
   StyleSheet,
   Text,
   View,
@@ -18,7 +19,6 @@ import { showMessage } from "react-native-flash-message";
 
 import {
   AppActivityIndicator,
-  AppErrorMessage,
   CardText,
   Divider,
   OrderBtn,
@@ -37,7 +37,6 @@ const orderDetails = () => {
   const navigation = useNavigation();
   const order = params;
 
-  const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handlePickUpOrder = async ({ orderId = order.order_id }) => {
@@ -99,6 +98,36 @@ const orderDetails = () => {
       });
       return;
     }
+  };
+  const handleCancelOrder = async () => {
+    setIsLoading(true);
+    const result = await ordersApi.cancelOrder(order.order_id);
+    setIsLoading(false);
+    navigation.goBack();
+    if (result.ok) {
+      showMessage({
+        message: "Order cancelled successfully!",
+        type: "success",
+      });
+      return;
+    }
+    if (!result.ok) {
+      showMessage({
+        message: result.data.detail,
+        type: "danger",
+      });
+      return;
+    }
+  };
+
+  const handleOrderCancelAlert = () => {
+    Alert.alert("Delete", "Are you sure you want to cancel this order?", [
+      {
+        text: "Yes",
+        onPress: () => handleCancelOrder(),
+      },
+      { text: "No" },
+    ]);
   };
 
   return (
@@ -225,7 +254,6 @@ const orderDetails = () => {
       </View>
       <AppActivityIndicator visible={isLoading} height="100%" />
 
-      {/* <AppErrorMessage error={error} visible={error} /> */}
       {(order?.payment_status === "pending" ||
         order?.payment_status === "cancelled" ||
         order?.payment_status === "failed") && (
@@ -274,6 +302,19 @@ const orderDetails = () => {
             onPress={handlePickUpOrder}
           />
         )}
+      {(user?.user_type === "dispatcher" || user?.user_type === "rider") &&
+        order?.order_status === "Picked up" &&
+        order?.order_status != "Delivered" && (
+          <OrderBtn
+            btnColor={"pendingColor"}
+            title={"cancel"}
+            textColor={"errorText"}
+            height={50}
+            onPress={handleOrderCancelAlert}
+            borderEndRad={0}
+            borderStartRad={0}
+          />
+        )}
     </>
   );
 };
@@ -305,7 +346,7 @@ const styles = StyleSheet.create({
   },
   description: {
     color: COLORS.darkText,
-    lineHeight: 25,
+    lineHeight: 20,
     textAlign: "justify",
   },
 

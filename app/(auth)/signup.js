@@ -61,7 +61,7 @@ const signup = () => {
       return;
     }
     setFieldExist(false);
-    router.replace("signin");
+    router.replace("confirmAccount");
   };
 
   return (
@@ -115,7 +115,7 @@ const signup = () => {
                   onChangeText={handleChange("phoneNumber")}
                   value={values.phoneNumber}
                   autoCapitalize="none"
-                  placeholder="0809988776655"
+                  placeholder="E.g 08099887766"
                   keyboardType="phone-pad"
                   marginBtm={-5}
                 />

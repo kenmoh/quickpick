@@ -1,5 +1,5 @@
-import { StyleSheet, ScrollView, View } from "react-native";
-import React, { useState } from "react";
+import { StyleSheet, ScrollView, View, RefreshControl } from "react-native";
+import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { showMessage } from "react-native-flash-message";
@@ -17,15 +17,17 @@ import usersApi from "../api/users";
 import { useNavigation } from "expo-router";
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required().label("First Name"),
-  lastName: Yup.string().required().label("Last Name"),
+  firstName: Yup.string(),
+  lastName: Yup.string(),
   location: Yup.string().required().label("Location"),
-  profilePhotoUrl: Yup.string().required().label("Image"),
+  profilePhotoUrl: Yup.string(),
 });
 
 const vendorProfile = () => {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
   const navigation = useNavigation();
 
   const username = user?.username;
@@ -34,6 +36,7 @@ const vendorProfile = () => {
     setIsLoading(true);
     const result = await usersApi.updateVendor(vendor, username);
     setIsLoading(false);
+
     navigation.goBack();
     if (result.ok) {
       showMessage({
@@ -51,17 +54,32 @@ const vendorProfile = () => {
     }
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    user;
+    setRefreshing(false);
+  };
+
+  useEffect(() => {
+    onRefresh();
+  }, [user]);
+
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <AppActivityIndicator visible={isLoading} height="100%" />
 
       <View style={styles.container}>
         <Formik
           initialValues={{
-            firstName: user?.first_name || "",
-            lastName: user?.last_name || "",
-            location: user?.location || "",
-            profilePhotoUrl: user?.photo_url || "",
+            firstName: "" || user?.first_name,
+            lastName: "" || user?.last_name,
+            location: "" || user?.location,
+            profilePhotoUrl: "" || user?.photo_url,
           }}
           validationSchema={validationSchema}
           onSubmit={handleUpdate}

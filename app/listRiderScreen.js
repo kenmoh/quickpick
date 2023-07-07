@@ -14,7 +14,6 @@ import { COLORS } from "../constants/colors_font";
 
 const listRiderScreen = () => {
   const { user } = useAuth();
-  const router = useRouter();
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
 
@@ -50,6 +49,17 @@ const listRiderScreen = () => {
                 phoneNumber={item?.phone_number}
                 plateNumber={item?.plate_number}
                 imageUrl={item?.photo_url}
+                onPress={() =>
+                  navigation.navigate("riderDetails", {
+                    fullName: item.full_name,
+                    username: item.username,
+                    email: item.email,
+                    phoneNumber: item.phone_number,
+                    plateNumber: item.plate_number,
+                    profilePhotoUrl: item.photo_url,
+                    riderId: item.id,
+                  })
+                }
               />
             )
           }

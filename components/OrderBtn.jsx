@@ -4,6 +4,9 @@ import { COLORS } from "../constants/colors_font";
 import { BUTTON_SIZE, FONT_SIZE } from "../constants/sizes";
 
 const OrderBtn = ({
+  borderEndRad = BUTTON_SIZE.mediumRadius,
+  borderStartRad = BUTTON_SIZE.mediumRadius,
+  btnBorderRadius = 0,
   textSize = "smallText",
   btnColor,
   title,
@@ -23,6 +26,9 @@ const OrderBtn = ({
           width: BUTTON_SIZE[width],
           backgroundColor: COLORS[btnColor],
           height: height,
+          borderRadius: btnBorderRadius,
+          borderTopEndRadius: borderEndRad,
+          borderTopStartRadius: borderStartRad,
         },
       ]}
     >
@@ -43,8 +49,8 @@ export default OrderBtn;
 const styles = StyleSheet.create({
   btnStyle: {
     width: BUTTON_SIZE.largeBtnWidth,
-    borderTopEndRadius: BUTTON_SIZE.mediumRadius,
-    borderTopStartRadius: BUTTON_SIZE.mediumRadius,
+    // borderTopEndRadius: BUTTON_SIZE.mediumRadius,
+    // borderTopStartRadius: BUTTON_SIZE.mediumRadius,
     justifyContent: "center",
     alignItems: "center",
   },

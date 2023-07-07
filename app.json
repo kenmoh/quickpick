@@ -6,7 +6,7 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "All QuickPick to access photo?"
+          "photosPermission": "Allow QuickPickup to access photo?"
         }
       ]
     ]

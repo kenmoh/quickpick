@@ -25,7 +25,6 @@ export default () => {
   return (
     <Tabs
       screenOptions={{
-        tabBarShowLabel: false,
         headerStyle: {
           backgroundColor: COLORS.primaryColor,
         },
@@ -44,15 +43,18 @@ export default () => {
           tabBarIcon: ({ color }) => (
             <AntDesign name="home" size={20} color={color} />
           ),
+
+          tabBarLabel: "HOME",
         }}
       />
       <Tabs.Screen
         name="myOrders"
         options={{
-          title: "My Orders",
+          title: "",
           tabBarIcon: ({ color }) => (
             <Feather name="list" size={20} color={color} />
           ),
+          tabBarLabel: "MY ORDERS",
         }}
       />
 
@@ -63,6 +65,7 @@ export default () => {
           tabBarIcon: ({ color }) => (
             <AntDesign name="bells" size={20} color={color} />
           ),
+          tabBarLabel: "NOTIFICATIONS",
         }}
       />
       <Tabs.Screen
@@ -72,6 +75,7 @@ export default () => {
           tabBarIcon: ({ color }) => (
             <AntDesign name="user" size={20} color={color} />
           ),
+          tabBarLabel: "PROFILE",
         }}
       />
     </Tabs>

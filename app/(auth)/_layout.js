@@ -40,6 +40,12 @@ export default () => (
           title: "",
         }}
       />
+      <Stack.Screen
+        name="confirmAccount"
+        options={{
+          title: "",
+        }}
+      />
     </Stack>
   </>
 );

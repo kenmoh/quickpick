@@ -60,7 +60,7 @@ const signup = () => {
       return;
     }
     setFieldExist(false);
-    router.replace("signin");
+    router.replace("confirmAccount");
   };
   return (
     <AppSafeAreaView>

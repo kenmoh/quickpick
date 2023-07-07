@@ -38,38 +38,12 @@ const wallet = () => {
     // Combine deposits and withdrawals arrays in the desired order
     const combinedTransactions = [...deposits, ...withdrawals];
 
-    // Group transactions by date
-    const groupedTransactions = combinedTransactions.reduce(
-      (acc, transaction) => {
-        const date = transaction.created_at.split("T")[0]; // Extract date portion
-
-        // If date key already exists, append the transaction to the existing array
-        if (acc[date]) {
-          acc[date].push(transaction);
-        } else {
-          // If date key doesn't exist, create a new array with the transaction
-          acc[date] = [transaction];
-        }
-
-        return acc;
-      },
-      {}
+    // Sort the object by date(desc)
+    combinedTransactions.sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
     );
 
-    // Sort the combined transactions based on their timestamps (assuming a timestamp property exists)
-    // const sortedTransactions = combinedTransactions.sort((a, b) => {
-    //   if (a.transaction_type !== b.transaction_type) {
-    //     return a.transaction_type.localeCompare(b.transaction_type);
-    //   }
-    //   return new Date(b.created_at) - new Date(a.created_at);
-    // });
-
-    // Flatten the grouped transactions array
-    const sortedTransactions = Object.values(groupedTransactions).flatMap(
-      (transactions) => transactions
-    );
-
-    setTransactions(sortedTransactions);
+    setTransactions(combinedTransactions);
   };
 
   const handleMakeWithdrawal = async () => {
@@ -103,49 +77,18 @@ const wallet = () => {
     <View style={styles.container}>
       <AppActivityIndicator visible={isLoading} height="100%" />
       <View style={styles.wallet}>
-        <Text style={styles.text}>Balance</Text>
-        <Text style={styles.balText}>{`N ${wallet?.balance}`}</Text>
-        <Text style={styles.text}>
-          Account Number: {user?.bank_account_number}
-        </Text>
+        <View>
+          <Text style={styles.text}>Balance</Text>
+          <Text style={styles.balText}>{`N ${wallet?.balance}`}</Text>
+          <Text style={styles.text}>
+            Acc. Number: {user?.bank_account_number}
+          </Text>
+        </View>
+        <Pressable style={styles.reqFund} onPress={handleMakeWithdrawal}>
+          <Text style={styles.btnText}>Request Fund</Text>
+        </Pressable>
       </View>
 
-      <Pressable style={styles.reqFund} onPress={handleMakeWithdrawal}>
-        <Text style={styles.btnText}>Request Fund</Text>
-      </Pressable>
-      {/* <AppErrorMessage error={error} visible={error} /> */}
-      {/* <ScrollView showsVerticalScrollIndicator={false}>
-        {transactions?.map((transaction) => (
-          <Transaction
-            key={transaction.id}
-            bgColor={`${
-              transaction.transaction_type === "deposit"
-                ? COLORS.success
-                : COLORS.pendingColor
-            }`}
-            iconColor={`${
-              transaction.transaction_type === "deposit"
-                ? COLORS.successColor
-                : COLORS.errorText
-            }`}
-            icon={`${
-              transaction.transaction_type === "deposit"
-                ? "arrow-down-left"
-                : "arrow-up-right"
-            }`}
-            vendorName={
-              transaction?.vendor_username || transaction?.company_name
-            }
-            amount={
-              transaction?.amount_payable || transaction?.withdrawal_amount
-            }
-            date={
-              transaction?.updated_at?.split("T")[0] ||
-              transaction?.created_at?.split("T")[0]
-            }
-          />
-        ))}
-      </ScrollView> */}
       <View style={styles.transaction}>
         <FlatList
           data={transactions}
@@ -192,27 +135,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
-    paddingHorizontal: PADDING.horizontalPaddingSmall,
   },
 
   wallet: {
-    backgroundColor: COLORS.activeTrackColor,
-    height: 110,
+    backgroundColor: COLORS.secondaryColor,
+    height: "100%",
     width: "100%",
-    borderRadius: BUTTON_SIZE.smallRadius,
-    marginVertical: BUTTON_SIZE.btnVerticalMarginLarge,
-    justifyContent: "center",
-    paddingHorizontal: PADDING.horizontalPaddingSmall,
+    justifyContent: "space-between",
+    padding: PADDING.horizontalPaddingSmall,
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
   },
   reqFund: {
-    width: "70%",
+    width: "40%",
     backgroundColor: COLORS.inputBackgroundColor,
     alignItems: "center",
     paddingVertical: 12.5,
-    marginTop: -35,
-    alignSelf: "center",
     borderRadius: BUTTON_SIZE.smallRadius,
-    marginBottom: 15,
+    marginVertical: 15,
   },
 
   text: {
@@ -232,7 +173,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   transaction: {
-    flex: 1,
+    flex: 4,
     backgroundColor: COLORS.white,
+    paddingHorizontal: PADDING.horizontalPaddingSmall,
   },
 });

@@ -1,29 +1,37 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { COLORS } from "../constants/colors_font";
 import Divider from "./Divider";
 
-const RiderCard = ({ fullName, imageUrl, phoneNumber, plateNumber }) => {
+const RiderCard = ({
+  fullName,
+  imageUrl,
+  onPress,
+  phoneNumber,
+  plateNumber,
+}) => {
   return (
-    <View style={styles.container}>
-      <Divider />
-      <View style={styles.topWrapper}>
-        <View style={styles.header}>
-          <Image
-            source={{ uri: imageUrl }}
-            style={styles.imageStyle}
-            resizeMode="cover"
-          />
-          <View style={styles.text}>
-            <Text style={styles.title}>{fullName}</Text>
-            <Text style={styles.phoneNumber}>{phoneNumber} </Text>
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.container}>
+        <Divider />
+        <View style={styles.topWrapper}>
+          <View style={styles.header}>
+            <Image
+              source={{ uri: imageUrl }}
+              style={styles.imageStyle}
+              resizeMode="cover"
+            />
+            <View style={styles.text}>
+              <Text style={styles.title}>{fullName}</Text>
+              <Text style={styles.phoneNumber}>{phoneNumber} </Text>
+            </View>
           </View>
         </View>
+        <View style={styles.btmWrapper}>
+          <Text style={styles.text}>Plate Number</Text>
+          <Text style={styles.text}>{plateNumber.toUpperCase()}</Text>
+        </View>
       </View>
-      <View style={styles.btmWrapper}>
-        <Text style={styles.text}>Plate Number</Text>
-        <Text style={styles.text}>{plateNumber.toUpperCase()}</Text>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

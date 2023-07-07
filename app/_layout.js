@@ -96,19 +96,31 @@ export default () => (
           <Stack.Screen
             name="listRiderScreen"
             options={{
-              title: "My Rider(s)",
+              title: "",
             }}
           />
           <Stack.Screen
             name="userProfile"
             options={{
-              title: "Profile",
+              title: "",
             }}
           />
           <Stack.Screen
             name="vendorProfile"
             options={{
-              title: "Profile",
+              title: "",
+            }}
+          />
+          <Stack.Screen
+            name="riderDetails"
+            options={{
+              title: "",
+            }}
+          />
+          <Stack.Screen
+            name="confirmAcc"
+            options={{
+              title: "",
             }}
           />
         </Stack>

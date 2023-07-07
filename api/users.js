@@ -10,6 +10,9 @@ const passwordResetEndPoint = "/password/recover";
 const changePasswordEndPoint = "/password/change-password";
 
 const getDispatchRiders = () => client.get(`${user}/dispatcher-riders`);
+const getOneUserById = (userId) => client.get(`${user}/${userId}`);
+const dispatchDeleteRider = (riderId) =>
+  client.delete(`${user}/${riderId}/delete-rider`);
 
 const sendPasswordResetLink = (user_email) => {
   const data = new FormData();
@@ -64,6 +67,7 @@ const updateDispatch = (dispatch, companyName) => {
 
   return client.patch(`${user}/dispatchers/${companyName}`, data);
 };
+
 const updateVendor = (vendor, username) => {
   const data = new FormData();
 
@@ -82,7 +86,7 @@ const addRider = (rider) => {
   const data = new FormData();
   data.append("email", rider.email.toLowerCase().trim());
   data.append("username", rider.username.toLowerCase().trim());
-  data.append("full_name", rider.fullName.toLowerCase().trim());
+  data.append("full_name", rider.fullName);
   data.append("phone_number", rider.phoneNumber);
   data.append("plate_number", rider.plateNumber);
   data.append("password", rider.password);
@@ -95,6 +99,28 @@ const addRider = (rider) => {
   return client.post(riderEndpoint, data);
 };
 
+const updateRider = (rider, riderId) => {
+  const data = new FormData();
+
+  data.append("full_name", rider.fullName);
+  data.append("plate_number", rider.plateNumber);
+  data.append("image", {
+    type: "image/jpeg",
+    uri: rider.profilePhotoUrl,
+    name: rider.profilePhotoUrl.split("/").slice(-1)[0],
+  });
+
+  return client.patch(`${user}/update/${riderId}/rider`, data);
+};
+
+const confirmAccount = (user) => {
+  const data = new FormData();
+
+  data.append("confrim_email", user.emailCode);
+  data.append("confirm_phone_number", user.phoneCode);
+  return client.patch(`${user}/confirm-account`, data);
+};
+
 export default {
   addDispatch,
   addUser,
@@ -104,4 +130,8 @@ export default {
   sendPasswordResetLink,
   changePassword,
   updateVendor,
+  getOneUserById,
+  updateRider,
+  confirmAccount,
+  dispatchDeleteRider,
 };

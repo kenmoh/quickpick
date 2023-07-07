@@ -2,13 +2,14 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import React from "react";
 
-import { useRouter, useNavigation } from "expo-router";
+import { useRouter, useNavigation, Link } from "expo-router";
 
-import { AppSafeAreaView, Divider, ProfileLink } from "../../components";
+import { AppSafeAreaView, ProfileLink } from "../../components";
 import { COLORS } from "../../constants/colors_font";
 import { PADDING } from "../../constants/sizes";
 import { useAuth } from "../../auth/context";
 import walletsApi from "../../api/wallets";
+import profileImage from "../../assets/profile.png";
 
 const profile = () => {
   const router = useRouter();
@@ -30,15 +31,20 @@ const profile = () => {
         <Image
           style={{
             resizeMode: "contain",
-            width: 60,
-            height: 60,
-            borderRadius: 50,
-            marginTop: -30,
+            width: 100,
+            height: 100,
+            borderRadius: 100,
+            marginTop: -50,
           }}
-          source={{
-            uri: "https://mohdelivery.s3.amazonaws.com/00a54cfc66fa14eb4fa10235twitter.jpeg",
-          }}
+          source={
+            user?.photo_url
+              ? {
+                  uri: user?.photo_url,
+                }
+              : require("../../assets/profile.png")
+          }
         />
+
         {user?.user_type === "dispatcher" ? (
           <Text style={styles.headerText}>
             {user?.company_name.toUpperCase()}
@@ -56,20 +62,21 @@ const profile = () => {
               onPress={() => router.push("addRider")}
             />
           )}
-          <ProfileLink
-            screenName={"Profile"}
-            onPress={() =>
-              router.push(
-                `${
-                  user?.user_type === "dispatch"
-                    ? "userProfile"
-                    : user?.user_type === "vendor"
-                    ? "vendorProfile"
-                    : "addRider"
-                }`
-              )
-            }
-          />
+          {(user?.user_type === "dispatcher" ||
+            user?.user_type === "vendor") && (
+            <ProfileLink
+              screenName={"Profile"}
+              onPress={() =>
+                router.push(
+                  `${
+                    user?.user_type === "dispatcher"
+                      ? "userProfile"
+                      : user?.user_type === "vendor" && "vendorProfile"
+                  }`
+                )
+              }
+            />
+          )}
           {user?.user_type === "dispatcher" && (
             <ProfileLink
               screenName={"Wallet"}
@@ -98,6 +105,13 @@ const profile = () => {
             screenName={"Support"}
             onPress={() => router.push("support")}
           />
+
+          {user?.account_status === "pending" && (
+            <ProfileLink
+              screenName={"Confirm Account"}
+              onPress={() => router.push("confirmAcc")}
+            />
+          )}
         </View>
         <View style={styles.btmContainer}>
           <TouchableOpacity onPress={signOut}>

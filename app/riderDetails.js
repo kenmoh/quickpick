@@ -129,14 +129,14 @@ const riderDetails = () => {
                     onPress={handleAlert}
                     style={{
                       flexDirection: "row",
-                      gap: 5,
+                      gap: 3,
                       alignItems: "center",
                     }}
                   >
-                    <AntDesign name="deleteuser" size={24} color="red" />
+                    <AntDesign name="deleteuser" size={24} color="#FFA69E" />
                     <Text
                       style={{
-                        color: "red",
+                        color: "#FFA69E",
                       }}
                     >
                       Delete Rider

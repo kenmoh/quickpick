@@ -34,7 +34,6 @@ const validationSchema = Yup.object().shape({
 
 const addOrder = () => {
   const navigation = useNavigation();
-  const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleAddOrder = async (item, { resetForm }) => {
@@ -97,7 +96,6 @@ const addOrder = () => {
               <View style={styles.form}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                   <ImagePickerForm field={"orderPhotoUrl"} />
-
                   <AppTextInput
                     label="Order Name"
                     secureTextEntry={false}
@@ -123,6 +121,7 @@ const addOrder = () => {
                   {touched.origin && errors.origin && (
                     <InputErrorMessage error={errors.origin} />
                   )}
+
                   <AppTextInput
                     label="Destination"
                     secureTextEntry={false}
@@ -154,7 +153,7 @@ const addOrder = () => {
                     secureTextEntry={false}
                     onChangeText={handleChange("description")}
                     value={values.description}
-                    autoCapitalize="none"
+                    autoCapitalize="sentences "
                     placeholder="Description"
                     isMultiline={true}
                   />

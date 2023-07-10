@@ -1,27 +1,27 @@
 import { useEffect } from "react";
 import { Tabs } from "expo-router";
-// import * as Permissions from "expo-permission";
-import { Notifications } from "expo";
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
 import { AntDesign, Feather } from "@expo/vector-icons";
 
 import { COLORS } from "../../constants/colors_font";
-import expoNotification from "../../api/expoNotification";
+import expoPushTokenApi from "../../api/expoNotification";
 
 export default () => {
-  // useEffect(() => {
-  //   registerForPushNotification();
-  // }, []);
-  // const registerForPushNotification = async () => {
-  //   try {
-  //     const permission = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-  //     if (!permission.granted) return;
-  //     const token = await Notifications.getExpoPushTokenAsync();
-  //     console.log(token);
-  //     expoNotification.register_notification(token);
-  //   } catch (error) {
-  //     console.log("Error getting notification token", error);
-  //   }
-  // };
+  useEffect(() => {
+    registerForPushNotification();
+  }, []);
+
+  const registerForPushNotification = async () => {
+    try {
+      // const permission = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      // if (!permission.granted) return;
+      const token = await Notifications.getExpoPushTokenAsync();
+      expoPushTokenApi.register_notification(token.data);
+    } catch (error) {
+      console.log("Error getting notification token", error);
+    }
+  };
   return (
     <Tabs
       screenOptions={{

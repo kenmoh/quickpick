@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
 
   vendorText: {
     color: COLORS.darkText,
-    fontWeight: "bold",
     fontSize: 14,
   },
   date: {

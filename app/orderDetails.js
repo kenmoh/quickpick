@@ -13,6 +13,7 @@ import {
   TriggeringView,
   ImageHeaderScrollView,
 } from "react-native-image-header-scroll-view";
+import { FontAwesome } from "@expo/vector-icons";
 
 import { useSearchParams, useNavigation } from "expo-router";
 import { showMessage } from "react-native-flash-message";
@@ -143,6 +144,39 @@ const orderDetails = () => {
           <View style={{ height: 800 }}>
             <TriggeringView onHide={() => console.log("text hidden")}>
               <View style={styles.detailContainer}>
+                {user?.user_type === "vendor" &&
+                  order?.order_status === "Picked up" &&
+                  order?.report_message != "" && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("reportMessageModal", {
+                          id: order.order_id,
+                        })
+                      }
+                    >
+                      <View style={styles.report}>
+                        <FontAwesome name="legal" size={24} color="gray" />
+                        <Text style={{ color: "gray" }}>Raise Dispute</Text>
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                {(user?.user_type === "dispatcher" ||
+                  user?.user_type === "rider") &&
+                  order?.order_status === "Delivered" &&
+                  order?.report_message != "" && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("reportMessageModal", {
+                          id: order.order_id,
+                        })
+                      }
+                    >
+                      <View style={styles.report}>
+                        <FontAwesome name="legal" size={24} color="gray" />
+                        <Text style={{ color: "gray" }}>Raise Dispute</Text>
+                      </View>
+                    </TouchableOpacity>
+                  )}
                 <View style={styles.headingContainer}>
                   <Text style={styles.text}>order information</Text>
                   <Status
@@ -247,6 +281,16 @@ const orderDetails = () => {
                 <CardText title="description" textTransform={"uppercase"} />
                 <Divider margin={3} />
                 <Text style={styles.description}>{order?.description}</Text>
+                {/* <Modal
+                  visible={modalVisible}
+                  animationType="slide"
+                  onRequestClose={() => setModalVisible(false)}
+                >
+                  <View>
+                    <Text>This is the content of the modal</Text>
+                  </View>
+                  
+                </Modal> */}
               </View>
             </TriggeringView>
           </View>
@@ -363,5 +407,11 @@ const styles = StyleSheet.create({
     color: COLORS.secondaryColor,
     padding: 10,
     backgroundColor: COLORS.white,
+  },
+  report: {
+    flexDirection: "row",
+    gap: 5,
+    alignItems: "center",
+    marginVertical: 10,
   },
 });

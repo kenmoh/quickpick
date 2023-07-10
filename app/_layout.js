@@ -123,6 +123,13 @@ export default () => (
               title: "",
             }}
           />
+          <Stack.Screen
+            name="reportMessageModal"
+            options={{
+              title: "",
+              presentation: "modal",
+            }}
+          />
         </Stack>
       </LocationProvider>
     </AuthProvider>

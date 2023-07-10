@@ -31,8 +31,12 @@ const orderReceived = (order_id) =>
   client.put(`${endpoint}/${order_id}/order-received`);
 
 // report user
-const reportUser = (order_id) =>
-  client.patch(`${endpoint}/${order_id}/report-dispatch-company`);
+const raiseDispute = (msg, order_id) => {
+  const data = new FormData();
+  data.append("report_message_subject", msg.subject);
+  data.append("report_message", msg.message);
+  return client.patch(`${endpoint}/${order_id}/report-user`, data);
+};
 
 // create new order
 const addItem = (item) => {
@@ -60,5 +64,5 @@ export default {
   orderDelievered,
   orderDetails,
   orderReceived,
-  reportUser,
+  raiseDispute,
 };

@@ -10,7 +10,6 @@ import { Card, FloatingActionButton } from "../components";
 import { useAuth } from "../auth/context";
 import { PADDING } from "../constants/sizes";
 import { COLORS } from "../constants/colors_font";
-import FlashMessage from "react-native-flash-message";
 
 const index = () => {
   const router = useRouter();

@@ -46,6 +46,12 @@ export default () => (
           title: "",
         }}
       />
+      <Stack.Screen
+        name="onboarding"
+        options={{
+          title: "",
+        }}
+      />
     </Stack>
   </>
 );

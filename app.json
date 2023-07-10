@@ -1,7 +1,9 @@
 {
   "expo": {
     "scheme": "acme",
-    "web": { "bundler": "metro" },
+    "web": {
+      "bundler": "metro"
+    },
     "plugins": [
       [
         "expo-image-picker",
@@ -9,6 +11,13 @@
           "photosPermission": "Allow QuickPickup to access photo?"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "563514b8-b145-4bf8-a93f-258c48d7dfe0"
+      }
+    },
+    "owner": "kenmoh",
+    "slug": "quickpickup"
   }
 }
